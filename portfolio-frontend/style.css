@@ -118,7 +118,7 @@ button {
 
 /* --- Buttons & Inputs --- */
 .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 0.75rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -128,6 +128,7 @@ button {
   justify-content: center;
   gap: 0.5rem;
   white-space: nowrap;
+  flex: 1 1 auto;
 }
 
 .btn-primary {
@@ -174,8 +175,8 @@ button {
 
 /* --- SVG Icons --- */
 .svg-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
@@ -260,41 +261,52 @@ button {
   animation: fadeIn 0.6s ease;
 }
 
+/* Navbar responsiveness fix */
 .navbar {
   position: sticky;
   top: 1rem;
   border-radius: 9999px;
-  padding: 0.75rem 1.25rem;
+  padding: 0.6rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   z-index: 40;
+  max-width: 100%;
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 700;
   background: linear-gradient(to right, #ff5500, #ffaa00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  flex-shrink: 0;
 }
 
 .nav-logo-img {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   border-radius: 50%;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 .nav-links {
   display: flex;
-  gap: 1.25rem;
-  font-size: 0.875rem;
+  gap: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-muted);
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-links a {
@@ -307,10 +319,10 @@ button {
 
 /* --- Hero Section & Profile Sizing --- */
 .hero-section {
-  padding: 3rem 0;
+  padding: 2.5rem 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
   align-items: center;
 }
 
@@ -335,7 +347,7 @@ button {
 }
 
 .hero-headline {
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900;
   line-height: 1.15;
   margin-bottom: 1.25rem;
@@ -343,7 +355,7 @@ button {
 
 .hero-subtext {
   color: var(--text-muted);
-  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  font-size: clamp(0.875rem, 1.5vw, 1.05rem);
   max-width: 36rem;
   margin-bottom: 1.5rem;
 }
@@ -364,17 +376,25 @@ button {
   font-size: 0.75rem;
 }
 
+/* Horizontal alignment for buttons in hero section */
 .hero-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
   width: 100%;
 }
 
+.hero-actions .btn {
+  flex: 1;
+}
+
 .social-links {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .social-btn {
@@ -415,8 +435,8 @@ button {
 
 /* Fixed Hero Avatar Container & Image */
 .avatar-box {
-  width: 9rem;
-  height: 9rem;
+  width: 8rem;
+  height: 8rem;
   border-radius: 50%;
   margin-bottom: 1.25rem;
   overflow: hidden;
@@ -482,8 +502,8 @@ button {
 }
 
 .about-avatar-circle {
-  width: clamp(10rem, 25vw, 15rem);
-  height: clamp(10rem, 25vw, 15rem);
+  width: clamp(9rem, 25vw, 15rem);
+  height: clamp(9rem, 25vw, 15rem);
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--border-theme);
@@ -517,10 +537,17 @@ button {
   line-height: 1.7;
 }
 
+/* Horizontal alignment for action buttons in About section */
 .about-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.about-actions .btn {
+  flex: 1;
 }
 
 /* --- CV Viewer Section --- */
@@ -576,6 +603,474 @@ button {
 .tab-buttons {
   display: flex;
   justify-content: flex-start;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  background: var(--theme-main);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(230, 57, 0, 0.45);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.grid-3, .grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* --- Card Components --- */
+.project-card {
+  padding: 1.25rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(230, 57, 0, 0.5);
+}
+
+.project-banner {
+  height: 9.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(179, 0, 0, 0.4), rgba(20, 6, 4, 0.9));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--theme-light);
+  border: 1px solid rgba(230, 57, 0, 0.2);
+}
+
+.project-category {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--theme-light);
+  text-transform: uppercase;
+}
+
+.project-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+.project-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(230, 57, 0, 0.15);
+}
+
+.demo-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--theme-light);
+}
+
+.btn-details {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(230, 57, 0, 0.3);
+  color: #ffedd5;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.cert-card {
+  padding: 1.25rem;
+  border-radius: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.cert-icon {
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+  background: rgba(230, 57, 0, 0.2);
+  color: var(--theme-light);
+  flex-shrink: 0;
+}
+
+.cert-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.cert-issuer {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.cert-badge {
+  display: inline-block;
+  margin-top: 0.625rem;
+  font-size: 0.625rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  background: rgba(102, 13, 0, 0.8);
+  color: var(--theme-light);
+  border: 1px solid var(--border-theme);
+}
+
+.tech-card {
+  padding: 0.875rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tech-icon {
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.tech-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Contact & Comments --- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.contact-box {
+  padding: 1.25rem;
+  border-radius: 1rem;
+}
+
+.contact-box h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.contact-box .sub-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.contact-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.comment-form {
+  margin-bottom: 1.5rem;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.comment-item {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.comment-author {
+  font-weight: 700;
+  color: var(--theme-light);
+}
+
+.comment-time {
+  font-size: 0.625rem;
+  color: #71717a;
+}
+
+/* --- Modal Styling --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 48rem;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-back-btn {
+  background: none;
+  color: var(--theme-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.modal-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.modal-desc {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-stat {
+  padding: 0.875rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-light);
+}
+
+.stat-desc {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+.modal-section {
+  margin-bottom: 1.25rem;
+}
+
+.modal-section h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.features-list li {
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.features-list li::before {
+  content: '';
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: var(--theme-light);
+  flex-shrink: 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(230, 57, 0, 0.15);
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==========================================================================
+   Responsive Breakpoints & Mobile Enhancements
+   ========================================================================== */
+
+/* Small Devices (480px and under) */
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+  
+  .hero-actions .btn {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .about-actions {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .about-actions .btn {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .social-links {
+    gap: 0.35rem;
+  }
+
+  .social-btn {
+    padding: 0.625rem;
+  }
+  
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-iframe {
+    height: 50vh;
+    min-height: 320px;
+  }
+}
+
+/* Medium Devices (Tablet - 640px to 768px) */
+@media (min-width: 640px) {
+  .tab-buttons {
+    justify-content: center;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .main-container {
+    padding: 1.5rem 2rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .contact-box {
+    padding: 1.5rem;
+  }
+
+  .modal-box {
+    padding: 2rem;
+  }
+}
+
+/* Large Devices (Desktops - 1024px and up) */
+@media (min-width: 1024px) {
+  .hero-section {
+    grid-template-columns: 7fr 5fr;
+    padding: 5rem 0;
+  }
+
+  .about-grid {
+    grid-template-columns: 5fr 7fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 5fr 7fr;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  }ontent: flex-start;
   overflow-x: auto;
   padding-bottom: 0.5rem;
   gap: 0.5rem;
