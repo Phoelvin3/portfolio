@@ -1,5 +1,5 @@
 // --- Configuration ---
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = '[https://your-backend.onrender.com/api](https://your-backend.onrender.com/api)';
 
 // --- Local Data Stores (Fallback/Static) ---
 let projects = [
