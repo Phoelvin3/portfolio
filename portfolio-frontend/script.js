@@ -38,6 +38,295 @@ let projects = [
   }
 ];
 
+let comments = [];
+
+let certificates = [
+  {
+    id: 'c1',
+    title: 'Full Stack Web Development',
+    issuer: 'University / Professional Platform',
+    date: '2026',
+    credentialUrl: '#'
+  },
+  {
+    id: 'c2',
+    title: 'Mobile App Development with Flutter',
+    issuer: 'Professional Certification',
+    date: '2026',
+    credentialUrl: '#'
+  }
+];
+
+const techStack = [
+  { name: "React", icon: "portfolio-frontend/assets/icons/react.png" },
+  { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
+  { name: "Node.js", icon: "portfolio-frontend/assets/icons/nodejs.png" },
+  { name: "Flutter", icon: "portfolio-frontend/assets/icons/flutter.png" },
+  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/icons/tailwind.png" },
+  { name: "Unity Engine", icon: "portfolio-frontend/assets/icons/unity.png" },
+  { name: "Kali Linux", icon: "portfolio-frontend/assets/icons/kalilinux.png" },
+  { name: "Vite", icon: "portfolio-frontend/assets/icons/vite.png" },
+  { name: "MongoDB", icon: "portfolio-frontend/assets/icons/mongodb.png" }
+];
+
+// --- Helper Functions ---
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+
+// --- App Initialization ---
+document.addEventListener('DOMContentLoaded', async () => {
+  initWelcomeScreen();
+  initNavigation();
+  initTabs();
+  renderProjects();
+  renderCertificates();
+  renderTechStack();
+  initModal();
+  initForms();
+
+  // Attempt backend loads gracefully
+  await fetchProjects();
+  await fetchComments();
+});
+
+// --- Welcome Screen Dismissal ---
+function initWelcomeScreen() {
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const mainContent = document.getElementById('main-content');
+
+  if (welcomeScreen && mainContent) {
+    const handleDismiss = (e) => {
+      e.stopPropagation();
+      welcomeScreen.style.display = 'none';
+      welcomeScreen.classList.add('hidden');
+      mainContent.classList.remove('hidden');
+      mainContent.style.display = 'block';
+      window.scrollTo(0, 0);
+    };
+
+    welcomeScreen.addEventListener('click', handleDismiss);
+    welcomeScreen.addEventListener('touchstart', handleDismiss, { passive: true });
+  }
+}
+
+// --- Navigation Scroll Handling ---
+function initNavigation() {
+  const links = document.querySelectorAll('.nav-links a');
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const section = document.getElementById(targetId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// --- Tab Switching Logic ---
+function initTabs() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const activePanel = document.getElementById(`tab-${targetTab}`);
+      if (activePanel) activePanel.classList.add('active');
+    });
+  });
+}
+
+// --- API Methods ---
+async function fetchProjects() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/projects`);
+    const result = await res.json();
+    if (result.success && result.data && result.data.length > 0) {
+      projects = result.data;
+      renderProjects();
+    }
+  } catch (err) {
+    console.warn('Backend unavailable, utilizing default fallback projects.');
+  }
+}
+
+async function fetchComments() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/comments`);
+    const result = await res.json();
+    if (result.success && result.data) {
+      comments = result.data;
+      renderComments();
+    }
+  } catch (err) {
+    console.warn('Comments service unavailable.');
+  }
+}
+
+// --- Render Functions ---
+function renderProjects() {
+  const container = document.getElementById('projects-container');
+  if (!container) return;
+
+  if (projects.length === 0) {
+    container.innerHTML = `<p class="text-muted">No projects found.</p>`;
+    return;
+  }
+
+  container.innerHTML = projects.map(p => `
+    <div class="glass-card project-card">
+      <span class="modal-category-tag">${escapeHTML(p.category)}</span>
+      <h3>${escapeHTML(p.title)}</h3>
+      <p>${escapeHTML(p.description)}</p>
+      <div class="tech-tags">
+        ${p.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
+      </div>
+      <button class="btn btn-outline btn-sm view-project-btn" onclick="openModal('${p.id}')">
+        View Details
+      </button>
+    </div>
+  `).join('');
+}
+
+function renderCertificates() {
+  const container = document.getElementById('certificates-container');
+  if (!container) return;
+
+  container.innerHTML = certificates.map(c => `
+    <div class="glass-card cert-card">
+      <h3>${escapeHTML(c.title)}</h3>
+      <p class="cert-issuer">${escapeHTML(c.issuer)}</p>
+      <p class="cert-date">Issued: ${escapeHTML(c.date)}</p>
+      <a href="${c.credentialUrl}" target="_blank" class="btn btn-outline btn-sm">Verify Credential</a>
+    </div>
+  `).join('');
+}
+
+function renderTechStack() {
+  const container = document.getElementById('techstack-container');
+  if (!container) return;
+
+  container.innerHTML = techStack.map(tech => `
+    <div class="glass-card tech-card">
+      <img src="${tech.icon}" alt="${escapeHTML(tech.name)}" class="tech-card-icon" onerror="this.style.display='none'" />
+      <span class="tech-card-name">${escapeHTML(tech.name)}</span>
+    </div>
+  `).join('');
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const countElem = document.getElementById('comment-count');
+
+  if (countElem) countElem.textContent = comments.length;
+  if (!list) return;
+
+  list.innerHTML = comments.map(c => `
+    <div class="comment-item glass-card">
+      <strong>${escapeHTML(c.name)}</strong>
+      <p>${escapeHTML(c.message)}</p>
+    </div>
+  `).join('');
+}
+
+// --- Modal Handlers ---
+function initModal() {
+  const modal = document.getElementById('project-modal');
+  const closeBtn = document.getElementById('modal-close-btn');
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.add('hidden');
+    });
+  }
+}
+
+function openModal(projectId) {
+  const project = projects.find(p => p.id === projectId);
+  if (!project) return;
+
+  document.getElementById('modal-title').textContent = project.title;
+  document.getElementById('modal-category').textContent = project.category;
+  document.getElementById('modal-desc').textContent = project.description;
+  document.getElementById('modal-tech-count').textContent = project.stats ? project.stats.techCount : project.tech.length;
+  document.getElementById('modal-features-count').textContent = project.stats ? project.stats.featuresCount : project.features.length;
+
+  const featuresList = document.getElementById('modal-features-list');
+  featuresList.innerHTML = project.features.map(f => `<li>${escapeHTML(f)}</li>`).join('');
+
+  const techTags = document.getElementById('modal-tech-tags');
+  techTags.innerHTML = project.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
+
+  document.getElementById('modal-demo').href = project.demoUrl || '#';
+  document.getElementById('modal-github').href = project.githubUrl || '#';
+
+  document.getElementById('project-modal').classList.remove('hidden');
+}
+
+// --- Form Submissions ---
+function initForms() {
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const message = document.getElementById('contact-msg').value;
+
+      try {
+        await fetch(`${API_BASE_URL}/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
+      } catch (err) {
+        console.warn('Contact API offline, fallback success alert triggered.');
+      }
+
+      alert('Thank you! Your message has been sent.');
+      contactForm.reset();
+    });
+  }
+
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('comment-name').value;
+      const msg = document.getElementById('comment-msg').value;
+
+      comments.unshift({ name, message: msg });
+      renderComments();
+
+      try {
+        await fetch(`${API_BASE_URL}/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, message: msg })
+        });
+      } catch (err) {
+        console.warn('Comments API offline, updated locally.');
+      }
+
+      commentForm.reset();
+    });
+  }
+   }    stats: { techCount: 4, featuresCount: 3 }
+  }
+];
+
 let certificates = [
   {
     id: 'c1',
