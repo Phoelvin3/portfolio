@@ -38,8 +38,6 @@ let projects = [
   }
 ];
 
-let comments = [];
-
 let certificates = [
   {
     id: 'c1',
@@ -57,6 +55,7 @@ let certificates = [
   }
 ];
 
+// Tech Stack using custom local PNG icons
 const techStack = [
   { name: "React", icon: "portfolio-frontend/assets/icons/react.png" },
   { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
@@ -69,16 +68,8 @@ const techStack = [
   { name: "MongoDB", icon: "portfolio-frontend/assets/icons/mongodb.png" }
 ];
 
-// --- Helper Functions ---
-function escapeHTML(str) {
-  if (!str) return '';
-  return str.replace(/[&<>'"]/g, 
-    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-  );
-}
-
 // --- App Initialization ---
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   initWelcomeScreen();
   initNavigation();
   initTabs();
@@ -87,24 +78,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderTechStack();
   initModal();
   initForms();
-
-  // Attempt backend loads gracefully
-  await fetchProjects();
-  await fetchComments();
 });
 
-// --- Welcome Screen Dismissal ---
+// --- Welcome Screen Dismissal Fix ---
 function initWelcomeScreen() {
   const welcomeScreen = document.getElementById('welcome-screen');
   const mainContent = document.getElementById('main-content');
 
   if (welcomeScreen && mainContent) {
+    // Event listener attached directly to the overlay container
     const handleDismiss = (e) => {
       e.stopPropagation();
-      welcomeScreen.style.display = 'none';
+      welcomeScreen.style.display = 'none'; // Instant Inline Fallback
       welcomeScreen.classList.add('hidden');
       mainContent.classList.remove('hidden');
-      mainContent.style.display = 'block';
+      mainContent.style.display = 'block'; // Instant Inline Fallback
       window.scrollTo(0, 0);
     };
 
@@ -147,50 +135,18 @@ function initTabs() {
   });
 }
 
-// --- API Methods ---
-async function fetchProjects() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/projects`);
-    const result = await res.json();
-    if (result.success && result.data && result.data.length > 0) {
-      projects = result.data;
-      renderProjects();
-    }
-  } catch (err) {
-    console.warn('Backend unavailable, utilizing default fallback projects.');
-  }
-}
-
-async function fetchComments() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/comments`);
-    const result = await res.json();
-    if (result.success && result.data) {
-      comments = result.data;
-      renderComments();
-    }
-  } catch (err) {
-    console.warn('Comments service unavailable.');
-  }
-}
-
 // --- Render Functions ---
 function renderProjects() {
   const container = document.getElementById('projects-container');
   if (!container) return;
 
-  if (projects.length === 0) {
-    container.innerHTML = `<p class="text-muted">No projects found.</p>`;
-    return;
-  }
-
   container.innerHTML = projects.map(p => `
     <div class="glass-card project-card">
-      <span class="modal-category-tag">${escapeHTML(p.category)}</span>
-      <h3>${escapeHTML(p.title)}</h3>
-      <p>${escapeHTML(p.description)}</p>
+      <span class="modal-category-tag">${p.category}</span>
+      <h3>${p.title}</h3>
+      <p>${p.description}</p>
       <div class="tech-tags">
-        ${p.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
+        ${p.tech.map(t => `<span class="tag">${t}</span>`).join('')}
       </div>
       <button class="btn btn-outline btn-sm view-project-btn" onclick="openModal('${p.id}')">
         View Details
@@ -205,9 +161,9 @@ function renderCertificates() {
 
   container.innerHTML = certificates.map(c => `
     <div class="glass-card cert-card">
-      <h3>${escapeHTML(c.title)}</h3>
-      <p class="cert-issuer">${escapeHTML(c.issuer)}</p>
-      <p class="cert-date">Issued: ${escapeHTML(c.date)}</p>
+      <h3>${c.title}</h3>
+      <p class="cert-issuer">${c.issuer}</p>
+      <p class="cert-date">Issued: ${c.date}</p>
       <a href="${c.credentialUrl}" target="_blank" class="btn btn-outline btn-sm">Verify Credential</a>
     </div>
   `).join('');
@@ -219,23 +175,8 @@ function renderTechStack() {
 
   container.innerHTML = techStack.map(tech => `
     <div class="glass-card tech-card">
-      <img src="${tech.icon}" alt="${escapeHTML(tech.name)}" class="tech-card-icon" onerror="this.style.display='none'" />
-      <span class="tech-card-name">${escapeHTML(tech.name)}</span>
-    </div>
-  `).join('');
-}
-
-function renderComments() {
-  const list = document.getElementById('comments-list');
-  const countElem = document.getElementById('comment-count');
-
-  if (countElem) countElem.textContent = comments.length;
-  if (!list) return;
-
-  list.innerHTML = comments.map(c => `
-    <div class="comment-item glass-card">
-      <strong>${escapeHTML(c.name)}</strong>
-      <p>${escapeHTML(c.message)}</p>
+      <img src="${tech.icon}" alt="${tech.name}" class="tech-card-icon" onerror="this.src='portfolio-frontend/assets/icons/default.png'" />
+      <span class="tech-card-name">${tech.name}</span>
     </div>
   `).join('');
 }
@@ -246,7 +187,10 @@ function initModal() {
   const closeBtn = document.getElementById('modal-close-btn');
 
   if (closeBtn && modal) {
-    closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
     modal.addEventListener('click', (e) => {
       if (e.target === modal) modal.classList.add('hidden');
     });
@@ -260,17 +204,17 @@ function openModal(projectId) {
   document.getElementById('modal-title').textContent = project.title;
   document.getElementById('modal-category').textContent = project.category;
   document.getElementById('modal-desc').textContent = project.description;
-  document.getElementById('modal-tech-count').textContent = project.stats ? project.stats.techCount : project.tech.length;
-  document.getElementById('modal-features-count').textContent = project.stats ? project.stats.featuresCount : project.features.length;
+  document.getElementById('modal-tech-count').textContent = project.stats.techCount;
+  document.getElementById('modal-features-count').textContent = project.stats.featuresCount;
 
   const featuresList = document.getElementById('modal-features-list');
-  featuresList.innerHTML = project.features.map(f => `<li>${escapeHTML(f)}</li>`).join('');
+  featuresList.innerHTML = project.features.map(f => `<li>${f}</li>`).join('');
 
   const techTags = document.getElementById('modal-tech-tags');
-  techTags.innerHTML = project.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
+  techTags.innerHTML = project.tech.map(t => `<span class="tag">${t}</span>`).join('');
 
-  document.getElementById('modal-demo').href = project.demoUrl || '#';
-  document.getElementById('modal-github').href = project.githubUrl || '#';
+  document.getElementById('modal-demo').href = project.demoUrl;
+  document.getElementById('modal-github').href = project.githubUrl;
 
   document.getElementById('project-modal').classList.remove('hidden');
 }
@@ -279,19 +223,385 @@ function openModal(projectId) {
 function initForms() {
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
+    contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('contact-name').value;
-      const email = document.getElementById('contact-email').value;
-      const message = document.getElementById('contact-msg').value;
+      alert('Thank you! Your message has been sent.');
+      contactForm.reset();
+    });
+  }
 
-      try {
-        await fetch(`${API_BASE_URL}/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, message })
-        });
-      } catch (err) {
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('comment-name').value;
+      const msg = document.getElementById('comment-msg').value;
+
+      const list = document.getElementById('comments-list');
+      const countElem = document.getElementById('comment-count');
+
+      if (list) {
+        const item = document.createElement('div');
+        item.className = 'comment-item glass-card';
+        item.innerHTML = `<strong>${name}</strong><p>${msg}</p>`;
+        list.prepend(item);
+      }
+
+      if (countElem) {
+        countElem.textContent = parseInt(countElem.textContent || '0') + 1;
+      }
+
+      commentForm.reset();
+    });
+  }
+}    stats: { techCount: 4, featuresCount: 3 }
+  }
+];
+
+let certificates = [
+  {
+    id: 'c1',
+    title: 'Full Stack Web Development',
+    issuer: 'University / Professional Platform',
+    date: '2026',
+    credentialUrl: '#'
+  },
+  {
+    id: 'c2',
+    title: 'Mobile App Development with Flutter',
+    issuer: 'Professional Certification',
+    date: '2026',
+    credentialUrl: '#'
+  }
+];
+
+// Tech Stack using custom local PNG icons
+const techStack = [
+  { name: "React", icon: "portfolio-frontend/assets/icons/react.png" },
+  { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
+  { name: "Node.js", icon: "portfolio-frontend/assets/icons/nodejs.png" },
+  { name: "Flutter", icon: "portfolio-frontend/assets/icons/flutter.png" },
+  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/icons/tailwind.png" },
+  { name: "Unity Engine", icon: "portfolio-frontend/assets/icons/unity.png" },
+  { name: "Kali Linux", icon: "portfolio-frontend/assets/icons/kalilinux.png" },
+  { name: "Vite", icon: "portfolio-frontend/assets/icons/vite.png" },
+  { name: "MongoDB", icon: "portfolio-frontend/assets/icons/mongodb.png" }
+];
+
+// --- App Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+  initWelcomeScreen();
+  initNavigation();
+  initTabs();
+  renderProjects();
+  renderCertificates();
+  renderTechStack();
+  initModal();
+  initForms();
+});
+
+// --- Welcome Screen Dismissal ---
+function initWelcomeScreen() {
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const mainContent = document.getElementById('main-content');
+
+  if (welcomeScreen && mainContent) {
+    welcomeScreen.addEventListener('click', () => {
+      welcomeScreen.classList.add('hidden');
+      mainContent.classList.remove('hidden');
+    });
+  }
+}
+
+// --- Navigation Scroll Handling ---
+function initNavigation() {
+  const links = document.querySelectorAll('.nav-links a');
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const section = document.getElementById(targetId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// --- Tab Switching Logic ---
+function initTabs() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const activePanel = document.getElementById(`tab-${targetTab}`);
+      if (activePanel) activePanel.classList.add('active');
+    });
+  });
+}
+
+// --- Render Functions ---
+function renderProjects() {
+  const container = document.getElementById('projects-container');
+  if (!container) return;
+
+  container.innerHTML = projects.map(p => `
+    <div class="glass-card project-card">
+      <span class="modal-category-tag">${p.category}</span>
+      <h3>${p.title}</h3>
+      <p>${p.description}</p>
+      <div class="tech-tags">
+        ${p.tech.map(t => `<span class="tag">${t}</span>`).join('')}
+      </div>
+      <button class="btn btn-outline btn-sm view-project-btn" onclick="openModal('${p.id}')">
+        View Details
+      </button>
+    </div>
+  `).join('');
+}
+
+function renderCertificates() {
+  const container = document.getElementById('certificates-container');
+  if (!container) return;
+
+  container.innerHTML = certificates.map(c => `
+    <div class="glass-card cert-card">
+      <h3>${c.title}</h3>
+      <p class="cert-issuer">${c.issuer}</p>
+      <p class="cert-date">Issued: ${c.date}</p>
+      <a href="${c.credentialUrl}" target="_blank" class="btn btn-outline btn-sm">Verify Credential</a>
+    </div>
+  `).join('');
+}
+
+function renderTechStack() {
+  const container = document.getElementById('techstack-container');
+  if (!container) return;
+
+  container.innerHTML = techStack.map(tech => `
+    <div class="glass-card tech-card">
+      <img src="${tech.icon}" alt="${tech.name}" class="tech-card-icon" onerror="this.src='portfolio-frontend/assets/icons/default.png'" />
+      <span class="tech-card-name">${tech.name}</span>
+    </div>
+  `).join('');
+}
+
+// --- Modal Handlers ---
+function initModal() {
+  const modal = document.getElementById('project-modal');
+  const closeBtn = document.getElementById('modal-close-btn');
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.add('hidden');
+    });
+  }
+}
+
+function openModal(projectId) {
+  const project = projects.find(p => p.id === projectId);
+  if (!project) return;
+
+  document.getElementById('modal-title').textContent = project.title;
+  document.getElementById('modal-category').textContent = project.category;
+  document.getElementById('modal-desc').textContent = project.description;
+  document.getElementById('modal-tech-count').textContent = project.stats.techCount;
+  document.getElementById('modal-features-count').textContent = project.stats.featuresCount;
+
+  const featuresList = document.getElementById('modal-features-list');
+  featuresList.innerHTML = project.features.map(f => `<li>${f}</li>`).join('');
+
+  const techTags = document.getElementById('modal-tech-tags');
+  techTags.innerHTML = project.tech.map(t => `<span class="tag">${t}</span>`).join('');
+
+  document.getElementById('modal-demo').href = project.demoUrl;
+  document.getElementById('modal-github').href = project.githubUrl;
+
+  document.getElementById('project-modal').classList.remove('hidden');
+}
+
+// --- Form Submissions ---
+function initForms() {
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you! Your message has been sent.');
+      contactForm.reset();
+    });
+  }
+
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('comment-name').value;
+      const msg = document.getElementById('comment-msg').value;
+
+      const list = document.getElementById('comments-list');
+      const countElem = document.getElementById('comment-count');
+
+      if (list) {
+        const item = document.createElement('div');
+        item.className = 'comment-item glass-card';
+        item.innerHTML = `<strong>${name}</strong><p>${msg}</p>`;
+        list.prepend(item);
+      }
+
+      if (countElem) {
+        countElem.textContent = parseInt(countElem.textContent || '0') + 1;
+      }
+
+      commentForm.reset();
+    });
+  }
+      }    stats: { techCount: 4, featuresCount: 3 }
+  }
+];
+
+let comments = [];
+
+const certificates = [
+  { id: 1, title: 'B.Sc. Computer Science Candidate', issuer: 'University Panel Verified', year: '2026' },
+  { id: 2, title: 'Full Stack Web Development', issuer: 'Meta / Coursera', year: '2025' },
+  { id: 3, title: 'Mobile App Development with Flutter', issuer: 'Google Certified', year: '2025' },
+  { id: 4, title: 'Node.js Application Developer', issuer: 'OpenJS Foundation', year: '2024' }
+];
+
+const techStack = [
+  { name: 'React', icon: '⚛️' },
+  { name: 'JavaScript', icon: '🟨' },
+  { name: 'Node.js', icon: '🟢' },
+  { name: 'Flutter', icon: '💙' },
+  { name: 'Tailwind CSS', icon: '🎨' },
+  { name: 'Unity Engine', icon: '🎮' },
+  { name: 'Kali Linux', icon: '🐉' },
+  { name: 'Vite', icon: '⚡' },
+  { name: 'MongoDB', icon: '🍃' }
+];
+
+// --- Initialization ---
+document.addEventListener('DOMContentLoaded', async () => {
+  renderCertificates();
+  renderTechStack();
+  renderProjects();
+  setupEventListeners();
+
+  // Load backend data
+  await fetchProjects();
+  await fetchComments();
+});
+
+// --- API Calls ---
+async function fetchProjects() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/projects`);
+    const result = await res.json();
+    if (result.success && result.data && result.data.length > 0) {
+      projects = result.data;
+      renderProjects();
+    }
+  } catch (err) {
+    console.warn('Backend unavailable, using default fallback projects:', err);
+  }
+}
+
+async function fetchComments() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/comments`);
+    const result = await res.json();
+    if (result.success && result.data) {
+      comments = result.data;
+      renderComments();
+    }
+  } catch (err) {
+    console.warn('Failed to fetch comments from backend:', err);
+    renderComments();
+  }
+}
+
+async function submitCommentToBackend(name, message) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, message })
+    });
+    const result = await res.json();
+    if (result.success && result.data) {
+      comments.unshift(result.data);
+      renderComments();
+      return true;
+    } else {
+      alert(result.error || 'Failed to post comment.');
+      return false;
+    }
+  } catch (err) {
+    console.error('Error posting comment:', err);
+    // Local fallback display if server is down
+    const localComment = { name, message, createdAt: new Date().toISOString() };
+    comments.unshift(localComment);
+    renderComments();
+    return true;
+  }
+}
+
+async function submitContactToBackend(name, email, message) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message })
+    });
+    const result = await res.json();
+    if (result.success) {
+      alert('Message sent successfully!');
+      return true;
+    } else {
+      alert(result.error || 'Failed to send message.');
+      return false;
+    }
+  } catch (err) {
+    console.error('Error submitting contact form:', err);
+    alert('Thank you for your message! (Server is currently in offline preview mode).');
+    return true;
+  }
+}
+
+// --- Render Methods ---
+function renderProjects() {
+  const container = document.getElementById('projects-container');
+  if (!container) return;
+
+  if (projects.length === 0) {
+    container.innerHTML = `<p class="text-muted">No projects found.</p>`;
+    return;
+  }
+
+  container.innerHTML = projects.map(proj => `
+    <div class="glass-card project-card">
+      <div>
+        <div class="project-banner">
+          <svg viewBox="0 0 24 24" class="svg-icon lg-icon"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+        </div>
+        <span class="project-category">${escapeHTML(proj.category)}</span>
+        <h3 class="project-title">${escapeHTML(proj.title)}</h3>
+        <p class="project-desc">${escapeHTML(proj.description)}</p>
+      </div>
+      <div class="project-footer">
+        <a href="${proj.demoUrl || '#'}" class="demo-link" target="_blank" rel="noopener">Live Demo ↗</a>
+        <button class="btn-details" onclick=      } catch (err) {
         console.warn('Contact API offline, fallback success alert triggered.');
       }
 
