@@ -1,40 +1,277 @@
-// --- Configuration ---
-const API_BASE_URL = 'https://your-backend.onrender.com/api';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelvin Kimutai | Computer Scientist & Full Stack Developer</title>
+  <link rel="stylesheet" href="portfolio-frontend/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
 
-// --- Local Data Stores (Fallback/Static) ---
-let projects = [
-  {
-    id: '1',
-    title: 'Kenya Tour Guide App',
-    category: 'Mobile Application',
-    description: 'A comprehensive travel companion built with Flutter and Supabase providing localized guide content, offline maps, and interactive itineraries.',
-    demoUrl: '#',
-    githubUrl: '#',
-    tech: ['Flutter', 'Supabase', 'Dart', 'Google Maps API'],
-    features: ['Real-time location updates', 'Offline mode support', 'User reviews & ratings'],
-    stats: { techCount: 4, featuresCount: 3 }
-  },
-  {
-    id: '2',
-    title: 'Tours & Travel Agency System',
-    category: 'Full Stack Web App',
-    description: 'Web platform engineered with React and Node.js for managing tour bookings, inventory management, user authentication, and booking scheduling.',
-    demoUrl: '#',
-    githubUrl: '#',
-    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS'],
-    features: ['Automated booking workflow', 'Admin dashboard', 'Secure payment gateway'],
-    stats: { techCount: 5, featuresCount: 3 }
-  },
-  {
-    id: '3',
-    title: 'Personal OS Mobile App',
-    category: 'Cross-Platform App',
-    description: 'A productivity and life-management dashboard tracking daily tasks, habit logging, personal notes, and analytics in one interface.',
-    demoUrl: '#',
-    githubUrl: '#',
-    tech: ['Flutter', 'Dart', 'Provider', 'SQLite'],
-    features: ['Custom widget dashboard', 'Habit tracker visualization', 'Local-first data sync'],
-    stats: { techCount: 4, featuresCount: 3 }
+  <!-- Background Glowing Orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ---------------- WELCOME OVERLAY SCREEN ---------------- -->
+  <div id="welcome-screen" class="welcome-overlay">
+    <div class="welcome-content">
+      <div class="welcome-icons">
+        <div class="icon-box">
+          <img src="portfolio-frontend/assets/icons/code.png" alt="Code Icon" class="png-icon" onerror="this.style.display='none'" />
+        </div>
+        <div class="icon-box">
+          <img src="portfolio-frontend/assets/icons/user.png" alt="User Icon" class="png-icon" onerror="this.style.display='none'" />
+        </div>
+        <div class="icon-box">
+          <img src="portfolio-frontend/assets/icons/github.png" alt="GitHub Icon" class="png-icon" onerror="this.style.display='none'" />
+        </div>
+      </div>
+      <h1 class="welcome-title">
+        Welcome To My <br />
+        <span class="text-white">Portfolio Website</span>
+      </h1>
+      <p class="welcome-hint">
+        Click anywhere to enter ✨
+      </p>
+    </div>
+  </div>
+
+  <!-- ---------------- MAIN CONTAINER ---------------- -->
+  <div id="main-content" class="main-container hidden">
+
+    <!-- Navbar -->
+    <nav class="navbar glass-panel">
+      <a href="#" class="nav-brand">
+        <img src="portfolio-frontend/assets/images/logo.png" alt="Kelvin Logo" class="nav-logo-img" onerror="this.style.display='none'" />
+        <span>Kelvin.</span>
+      </a>
+      <div class="nav-links">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-text">
+        <div class="badge">
+          <span>✨</span> Ready to Innovate
+        </div>
+        <h1 class="hero-headline">
+          Computer Scientist & <br />
+          <span class="gradient-text">Full Stack Developer</span>
+        </h1>
+        <p class="hero-subtext">
+          Crafting modern, high-performance web & mobile applications. Focused on scalable full-stack software development, intuitive user interfaces, and robust systems architecture.
+        </p>
+        <div class="tech-tags">
+          <span class="tag">React</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">Flutter</span>
+          <span class="tag">Tailwind</span>
+          <span class="tag">Supabase</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn btn-primary">Projects</a>
+          <a href="portfolio-frontend/assets/kelvin-kimutai-resume.pdf" download="Kelvin_Kimutai_CV.pdf" class="btn btn-outline">Download CV</a>
+        </div>
+        <div class="social-links">
+          <a href="https://github.com/Phoelvin3" target="_blank" rel="noreferrer" class="social-btn" aria-label="GitHub">
+            <img src="portfolio-frontend/assets/icons/github.png" alt="GitHub" class="png-icon" onerror="this.style.display='none'" />
+          </a>
+          <a href="https://www.linkedin.com/in/kelvin-kimutai-26a233243/" target="_blank" rel="noreferrer" class="social-btn" aria-label="LinkedIn">
+            <img src="portfolio-frontend/assets/icons/linkedin.png" alt="LinkedIn" class="png-icon" onerror="this.style.display='none'" />
+          </a>
+          <a href="https://x.com/@techwithkelvin" target="_blank" rel="noreferrer" class="social-btn" aria-label="Twitter">
+            <img src="portfolio-frontend/assets/icons/twitter.png" alt="Twitter" class="png-icon" onerror="this.style.display='none'" />
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card-wrapper">
+        <div class="glass-panel hero-card">
+          <div class="avatar-box">
+            <img src="portfolio-frontend/assets/images/profile-pic.png" alt="Kelvin Kimutai" class="profile-img" onerror="this.src='https://via.placeholder.com/150/e63900/ffffff?text=Kelvin'" />
+          </div>
+          <h3 class="card-name">Kelvin Kimutai</h3>
+          <p class="card-title">Computer Science Developer</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="section-header">
+        <h2>About Me</h2>
+        <p class="subtitle">✨ Transforming ideas into digital experiences ✨</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-avatar-container">
+          <div class="about-avatar-circle glass-panel">
+            <img src="portfolio-frontend/assets/images/profile-pic.png" alt="Kelvin Kimutai About" class="about-img" onerror="this.src='https://via.placeholder.com/250/e63900/ffffff?text=Kelvin+K.'" />
+          </div>
+        </div>
+
+        <div class="about-bio">
+          <h3>Hello, I'm <span class="purple-text">Kelvin Kimutai</span></h3>
+          <p>
+            I am a Computer Science graduate passionate about full-stack web and mobile application development. Experienced in building modern, performant web platforms with React and Node.js, cross-platform mobile apps with Flutter, and interactive systems. I thrive on solving complex computational problems and building user-centric products.
+          </p>
+          <div class="about-actions">
+            <a href="portfolio-frontend/assets/kelvin-kimutai-resume.pdf" download="Kelvin_Kimutai_CV.pdf" class="btn btn-primary">Download CV</a>
+            <a href="#portfolio" class="btn btn-outline">View Projects</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-value">10+</div>
+          <div class="stat-label">TOTAL PROJECTS</div>
+          <div class="stat-sub">Innovative web & mobile solutions</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-value">4+</div>
+          <div class="stat-label">CERTIFICATES</div>
+          <div class="stat-sub">Professional skills validated</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-value">3+</div>
+          <div class="stat-label">YEARS DEV EXPERIENCE</div>
+          <div class="stat-sub">Continuous learning journey</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">COMMITMENT</div>
+          <div class="stat-sub">Quality code & scalable architecture</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Showcase / Portfolio Section -->
+    <section id="portfolio" class="section">
+      <div class="section-header">
+        <h2>Portfolio Showcase</h2>
+        <p class="subtitle">Explore my journey through projects, certifications, and technical expertise.</p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="projects">Projects</button>
+        <button class="tab-btn" data-tab="certificates">Certificates</button>
+        <button class="tab-btn" data-tab="techstack">Tech Stack</button>
+      </div>
+
+      <!-- Tab Content Panels -->
+      <div id="tab-projects" class="tab-panel active">
+        <div class="grid-3" id="projects-container"></div>
+      </div>
+
+      <div id="tab-certificates" class="tab-panel">
+        <div class="grid-2" id="certificates-container"></div>
+      </div>
+
+      <div id="tab-techstack" class="tab-panel">
+        <div class="grid-4" id="techstack-container"></div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="section-header">
+        <h2>Contact Me</h2>
+        <p class="subtitle">Got a question? Send me a message and I'll get back to you soon.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <div class="glass-panel contact-box">
+          <h3>Get in Touch</h3>
+          <p class="sub-text">Have something to discuss? Send me a message and let's talk.</p>
+          <form id="contact-form">
+            <input type="text" id="contact-name" placeholder="Your Name" class="input-field" required />
+            <input type="email" id="contact-email" placeholder="Your Email" class="input-field" required />
+            <textarea id="contact-msg" rows="4" placeholder="Your Message" class="input-field" required></textarea>
+            <button type="submit" class="btn btn-primary full-width">Send Message</button>
+          </form>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="glass-panel contact-box">
+          <h3>Comments (<span id="comment-count">0</span>)</h3>
+          
+          <form id="comment-form" class="comment-form">
+            <input type="text" id="comment-name" placeholder="Name *" class="input-field" required />
+            <textarea id="comment-msg" rows="2" placeholder="Write your message here..." class="input-field" required></textarea>
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+          </form>
+
+          <div id="comments-list" class="comments-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      © 2026 Kelvin Kimutai. All Rights Reserved.
+    </footer>
+  </div>
+
+  <!-- ---------------- PROJECT DETAILS MODAL ---------------- -->
+  <div id="project-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-box">
+      <button id="modal-close-btn" class="modal-back-btn btn-outline btn-sm">
+        Back to Projects
+      </button>
+
+      <div class="modal-header">
+        <span id="modal-category" class="modal-category-tag">Full Stack Development</span>
+        <h2 id="modal-title" class="modal-title gradient-text">Project Title</h2>
+        <p id="modal-desc" class="modal-desc">Project description...</p>
+      </div>
+
+      <div class="modal-stats-grid">
+        <div class="glass-card modal-stat">
+          <span id="modal-tech-count" class="stat-num">0</span>
+          <div class="stat-desc">Total Technologies</div>
+        </div>
+        <div class="glass-card modal-stat">
+          <span id="modal-features-count" class="stat-num">0</span>
+          <div class="stat-desc">Key Features</div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h4>Key Features</h4>
+        <ul id="modal-features-list" class="features-list"></ul>
+      </div>
+
+      <div class="modal-section">
+        <h4>Technologies Used</h4>
+        <div id="modal-tech-tags" class="tech-tags"></div>
+      </div>
+
+      <div class="modal-actions">
+        <a id="modal-demo" href="#" class="btn btn-primary btn-sm" target="_blank">Live Demo</a>
+        <a id="modal-github" href="#" class="btn btn-outline btn-sm" target="_blank">Source Code</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="portfolio-frontend/script.js"></script>
+</body>
+  </html>    stats: { techCount: 4, featuresCount: 3 }
   }
 ];
 
