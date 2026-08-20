@@ -23,13 +23,13 @@
     <div class="welcome-content">
       <div class="welcome-icons">
         <div class="icon-box">
-          <img src="portfolio-frontend/assets/icons/code.png" alt="Code Icon" class="png-icon" />
+          <img src="portfolio-frontend/assets/icons/code.png" alt="Code Icon" class="png-icon" onerror="this.style.display='none'" />
         </div>
         <div class="icon-box">
-          <img src="portfolio-frontend/assets/icons/user.png" alt="User Icon" class="png-icon" />
+          <img src="portfolio-frontend/assets/icons/user.png" alt="User Icon" class="png-icon" onerror="this.style.display='none'" />
         </div>
         <div class="icon-box">
-          <img src="portfolio-frontend/assets/icons/github.png" alt="GitHub Icon" class="png-icon" />
+          <img src="portfolio-frontend/assets/icons/github.png" alt="GitHub Icon" class="png-icon" onerror="this.style.display='none'" />
         </div>
       </div>
       <h1 class="welcome-title">
@@ -37,8 +37,7 @@
         <span class="text-white">Portfolio Website</span>
       </h1>
       <p class="welcome-hint">
-        Click anywhere to enter 
-        <img src="portfolio-frontend/assets/icons/sparkles.png" alt="Sparkles" class="png-icon inline-icon" />
+        Click anywhere to enter ✨
       </p>
     </div>
   </div>
@@ -64,8 +63,7 @@
     <section id="hero" class="hero-section">
       <div class="hero-text">
         <div class="badge">
-          <img src="portfolio-frontend/assets/icons/sparkles.png" alt="Sparkle" class="png-icon inline-icon" />
-          <span>Ready to Innovate</span>
+          <span>✨</span> Ready to Innovate
         </div>
         <h1 class="hero-headline">
           Computer Scientist & <br />
@@ -88,13 +86,13 @@
         </div>
         <div class="social-links">
           <a href="https://github.com/Phoelvin3" target="_blank" rel="noreferrer" class="social-btn" aria-label="GitHub">
-            <img src="portfolio-frontend/assets/icons/github.png" alt="GitHub" class="png-icon" />
+            <img src="portfolio-frontend/assets/icons/github.png" alt="GitHub" class="png-icon" onerror="this.style.display='none'" />
           </a>
           <a href="https://www.linkedin.com/in/kelvin-kimutai-26a233243/" target="_blank" rel="noreferrer" class="social-btn" aria-label="LinkedIn">
-            <img src="portfolio-frontend/assets/icons/linkedin.png" alt="LinkedIn" class="png-icon" />
+            <img src="portfolio-frontend/assets/icons/linkedin.png" alt="LinkedIn" class="png-icon" onerror="this.style.display='none'" />
           </a>
           <a href="https://x.com/@techwithkelvin" target="_blank" rel="noreferrer" class="social-btn" aria-label="Twitter">
-            <img src="portfolio-frontend/assets/icons/twitter.png" alt="Twitter" class="png-icon" />
+            <img src="portfolio-frontend/assets/icons/twitter.png" alt="Twitter" class="png-icon" onerror="this.style.display='none'" />
           </a>
         </div>
       </div>
@@ -114,11 +112,7 @@
     <section id="about" class="section">
       <div class="section-header">
         <h2>About Me</h2>
-        <p class="subtitle">
-          <img src="portfolio-frontend/assets/icons/sparkles.png" alt="Sparkle" class="png-icon inline-icon" />
-          Transforming ideas into digital experiences
-          <img src="portfolio-frontend/assets/icons/sparkles.png" alt="Sparkle" class="png-icon inline-icon" />
-        </p>
+        <p class="subtitle">✨ Transforming ideas into digital experiences ✨</p>
       </div>
 
       <div class="about-grid">
@@ -134,10 +128,7 @@
             I am a Computer Science graduate passionate about full-stack web and mobile application development. Experienced in building modern, performant web platforms with React and Node.js, cross-platform mobile apps with Flutter, and interactive systems. I thrive on solving complex computational problems and building user-centric products.
           </p>
           <div class="about-actions">
-            <a href="portfolio-frontend/assets/kelvin-kimutai-resume.pdf" download="Kelvin_Kimutai_CV.pdf" class="btn btn-primary">
-              <img src="portfolio-frontend/assets/icons/download.png" alt="Download Icon" class="png-icon inline-icon" />
-              Download CV
-            </a>
+            <a href="portfolio-frontend/assets/kelvin-kimutai-resume.pdf" download="Kelvin_Kimutai_CV.pdf" class="btn btn-primary">Download CV</a>
             <a href="#portfolio" class="btn btn-outline">View Projects</a>
           </div>
         </div>
@@ -223,6 +214,107 @@
           <form id="comment-form" class="comment-form">
             <input type="text" id="comment-name" placeholder="Name *" class="input-field" required />
             <textarea id="comment-msg" rows="2" placeholder="Write your message here..." class="input-field" required></textarea>
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+          </form>
+
+          <div id="comments-list" class="comments-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      © 2026 Kelvin Kimutai. All Rights Reserved.
+    </footer>
+  </div>
+
+  <!-- ---------------- PROJECT DETAILS MODAL ---------------- -->
+  <div id="project-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-box">
+      <button id="modal-close-btn" class="modal-back-btn btn-outline btn-sm">
+        Back to Projects
+      </button>
+
+      <div class="modal-header">
+        <span id="modal-category" class="modal-category-tag">Full Stack Development</span>
+        <h2 id="modal-title" class="modal-title gradient-text">Project Title</h2>
+        <p id="modal-desc" class="modal-desc">Project description...</p>
+      </div>
+
+      <div class="modal-stats-grid">
+        <div class="glass-card modal-stat">
+          <span id="modal-tech-count" class="stat-num">0</span>
+          <div class="stat-desc">Total Technologies</div>
+        </div>
+        <div class="glass-card modal-stat">
+          <span id="modal-features-count" class="stat-num">0</span>
+          <div class="stat-desc">Key Features</div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h4>Key Features</h4>
+        <ul id="modal-features-list" class="features-list"></ul>
+      </div>
+
+      <div class="modal-section">
+        <h4>Technologies Used</h4>
+        <div id="modal-tech-tags" class="tech-tags"></div>
+      </div>
+
+      <div class="modal-actions">
+        <a id="modal-demo" href="#" class="btn btn-primary btn-sm" target="_blank">Live Demo</a>
+        <a id="modal-github" href="#" class="btn btn-outline btn-sm" target="_blank">Source Code</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="portfolio-frontend/script.js"></script>
+</body>
+</html>------------- PROJECT DETAILS MODAL ---------------- -->
+  <div id="project-modal" class="modal-overlay hidden">
+    <div class="glass-panel modal-box">
+      <button id="modal-close-btn" class="modal-back-btn btn-outline btn-sm">
+        Back to Projects
+      </button>
+
+      <div class="modal-header">
+        <span id="modal-category" class="modal-category-tag">Full Stack Development</span>
+        <h2 id="modal-title" class="modal-title gradient-text">Project Title</h2>
+        <p id="modal-desc" class="modal-desc">Project description...</p>
+      </div>
+
+      <div class="modal-stats-grid">
+        <div class="glass-card modal-stat">
+          <span id="modal-tech-count" class="stat-num">0</span>
+          <div class="stat-desc">Total Technologies</div>
+        </div>
+        <div class="glass-card modal-stat">
+          <span id="modal-features-count" class="stat-num">0</span>
+          <div class="stat-desc">Key Features</div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h4>Key Features</h4>
+        <ul id="modal-features-list" class="features-list"></ul>
+      </div>
+
+      <div class="modal-section">
+        <h4>Technologies Used</h4>
+        <div id="modal-tech-tags" class="tech-tags"></div>
+      </div>
+
+      <div class="modal-actions">
+        <a id="modal-demo" href="#" class="btn btn-primary btn-sm" target="_blank">Live Demo</a>
+        <a id="modal-github" href="#" class="btn btn-outline btn-sm" target="_blank">Source Code</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="portfolio-frontend/script.js"></script>
+</body>
+              </html>ssage here..." class="input-field" required></textarea>
             <button type="submit" class="btn btn-primary">Post Comment</button>
           </form>
 
