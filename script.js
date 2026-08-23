@@ -58,15 +58,15 @@ let certificates = [
 ];
 
 const techStack = [
-  { name: "React", icon: "portfolio-frontend/assets/React.png" },
-  { name: "JavaScript", icon: "portfolio-frontend/assets/JavaScript.png" },
-  { name: "Node.js", icon: "portfolio-frontend/assets/Node.js.png" },
-  { name: "Flutter", icon: "portfolio-frontend/assets/Flutter.png" },
-  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/Tailwind CSS.png" },
-  { name: "Unity Engine", icon: "portfolio-frontend/assets/Unity.png" },
-  { name: "Kali Linux", icon: "portfolio-frontend/assets/Linux.png" },
-  { name: "Vite", icon: "portfolio-frontend/assets/Vite.js.png" },
-  { name: "MongoDB", icon: "portfolio-frontend/assets/MongoDB.png" }
+  { name: "React", icon: "portfolio-frontend/assets/icons/react.png" },
+  { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
+  { name: "Node.js", icon: "portfolio-frontend/assets/icons/nodejs.png" },
+  { name: "Flutter", icon: "portfolio-frontend/assets/icons/flutter.png" },
+  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/icons/tailwind.png" },
+  { name: "Unity Engine", icon: "portfolio-frontend/assets/icons/unity.png" },
+  { name: "Kali Linux", icon: "portfolio-frontend/assets/icons/kalilinux.png" },
+  { name: "Vite", icon: "portfolio-frontend/assets/icons/vite.png" },
+  { name: "MongoDB", icon: "portfolio-frontend/assets/icons/mongodb.png" }
 ];
 
 // --- Helper Functions ---
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initModal();
   initForms();
 
-  // Attempt backend loads gracefully
+  // Attempt backend loads gracefully if active
   await fetchProjects();
   await fetchComments();
 });
@@ -281,52 +281,75 @@ function openModal(projectId) {
   document.getElementById('project-modal').classList.remove('hidden');
 }
 
-// --- Form Submissions ---
+// --- Form Submissions (Formspree Direct Dispatch) ---
 function initForms() {
+  // Direct Contact Form
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('contact-name').value;
-      const email = document.getElementById('contact-email').value;
-      const message = document.getElementById('contact-msg').value;
+      const form = e.target;
+      const data = new FormData(form);
 
       try {
-        await fetch(`${API_BASE_URL}/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, message })
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: { 'Accept': 'application/json' }
         });
-      } catch (err) {
-        console.warn('Contact API offline, fallback success alert triggered.');
-      }
 
-      alert('Thank you! Your message has been sent.');
-      contactForm.reset();
+        if (response.ok) {
+          alert('Thank you! Your message has been sent to my email.');
+          form.reset();
+        } else {
+          alert('Oops! There was a problem submitting your message.');
+        }
+      } catch (err) {
+        alert('Network error. Please try again.');
+      }
     });
   }
 
+  // Public/Email Comment Form
   const commentForm = document.getElementById('comment-form');
   if (commentForm) {
     commentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const form = e.target;
       const name = document.getElementById('comment-name').value;
       const msg = document.getElementById('comment-msg').value;
-
-      comments.unshift({ name, message: msg });
-      renderComments();
+      const data = new FormData(form);
 
       try {
-        await fetch(`${API_BASE_URL}/comments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, message: msg })
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: { 'Accept': 'application/json' }
         });
-      } catch (err) {
-        console.warn('Comments API offline, updated locally.');
-      }
 
-      commentForm.reset();
+        if (response.ok) {
+          const list = document.getElementById('comments-list');
+          const countElem = document.getElementById('comment-count');
+
+          if (list) {
+            const item = document.createElement('div');
+            item.className = 'comment-item glass-card';
+            item.innerHTML = `<strong>${escapeHTML(name)}</strong><p>${escapeHTML(msg)}</p>`;
+            list.prepend(item);
+          }
+
+          if (countElem) {
+            countElem.textContent = parseInt(countElem.textContent || '0') + 1;
+          }
+
+          alert('Comment posted and forwarded to my email!');
+          form.reset();
+        } else {
+          alert('Failed to send comment.');
+        }
+      } catch (err) {
+        alert('Network error while posting comment.');
+      }
     });
   }
-        }
+    }
