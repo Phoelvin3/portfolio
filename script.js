@@ -59,14 +59,14 @@ let certificates = [
 
 const techStack = [
   { name: "React", icon: "portfolio-frontend/assets/React.png" },
-  { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
+  { name: "JavaScript", icon: "portfolio-frontend/assets/JavaScript.png" },
   { name: "Node.js", icon: "portfolio-frontend/assets/Node.js.png" },
   { name: "Flutter", icon: "portfolio-frontend/assets/Flutter.png" },
-  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/icons/tailwind.png" },
-  { name: "Unity Engine", icon: "portfolio-frontend/assets/icons/unity.png" },
-  { name: "Kali Linux", icon: "portfolio-frontend/assets/icons/kalilinux.png" },
-  { name: "Vite", icon: "portfolio-frontend/assets/icons/vite.png" },
-  { name: "MongoDB", icon: "portfolio-frontend/assets/icons/mongodb.png" }
+  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/Tailwind CSS.png" },
+  { name: "Unity Engine", icon: "portfolio-frontend/assets/Unity.png" },
+  { name: "Kali Linux", icon: "portfolio-frontend/assets/Linux.png" },
+  { name: "Vite", icon: "portfolio-frontend/assets/Vite.js.png" },
+  { name: "MongoDB", icon: "portfolio-frontend/assets/MongoDB.png" }
 ];
 
 // --- Helper Functions ---
