@@ -1,4 +1,182 @@
-/* --- Global Styles & Crimson/Amber Variables --- */
+/* --- Modal Background Overlay --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Main Modal Container --- */
+.modal-content {
+  background: rgba(18, 18, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 87, 34, 0.15);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.75rem;
+  position: relative;
+  color: #f1f1f1;
+}
+
+/* --- Category Badge & Header --- */
+.modal-category-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ff5722;
+  margin-bottom: 0.5rem;
+}
+
+.modal-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.modal-content #modal-desc {
+  font-size: 0.925rem;
+  color: #a0a0ab;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Stats Grid (2 Columns) --- */
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1rem 0.75rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #ff5722;
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+/* --- Key Features Section --- */
+.modal-section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e4e4e7;
+  margin-bottom: 0.5rem;
+}
+
+.modal-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.modal-features-list li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  color: #c4c4cc;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.modal-features-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #ff5722;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* --- Tech Pills --- */
+.modal-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.modal-tech-tags .tag {
+  background: rgba(255, 87, 34, 0.08);
+  border: 1px solid rgba(255, 87, 34, 0.25);
+  color: #ff7043;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* --- Action Buttons --- */
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.modal-actions .btn {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #ff5722;
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+}
+
+.btn-primary:hover {
+  background: #f4511e;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e4e4e7;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+                                                            }/* --- Global Styles & Crimson/Amber Variables --- */
 :root {
   --bg-dark: #080302;
   --bg-card: rgba(255, 255, 255, 0.03);
