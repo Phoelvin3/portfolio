@@ -283,7 +283,6 @@ function openModal(projectId) {
 
 // --- Form Submissions (Formspree Direct Dispatch) ---
 function initForms() {
-  // Direct Contact Form
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
@@ -293,7 +292,7 @@ function initForms() {
 
       try {
         const response = await fetch(form.action, {
-          method: form.method,
+          method: 'POST',
           body: data,
           headers: { 'Accept': 'application/json' }
         });
@@ -302,54 +301,12 @@ function initForms() {
           alert('Thank you! Your message has been sent to my email.');
           form.reset();
         } else {
-          alert('Oops! There was a problem submitting your message.');
+          const errData = await response.json();
+          alert(`Formspree Error: ${errData.errors ? errData.errors.map(e => e.message).join(', ') : 'Submission failed.'}`);
         }
       } catch (err) {
-        alert('Network error. Please try again.');
+        alert('Network error. Check your internet connection or Formspree endpoint URL.');
       }
     });
   }
-
-  // Public/Email Comment Form
-  const commentForm = document.getElementById('comment-form');
-  if (commentForm) {
-    commentForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const name = document.getElementById('comment-name').value;
-      const msg = document.getElementById('comment-msg').value;
-      const data = new FormData(form);
-
-      try {
-        const response = await fetch(form.action, {
-          method: form.method,
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-          const list = document.getElementById('comments-list');
-          const countElem = document.getElementById('comment-count');
-
-          if (list) {
-            const item = document.createElement('div');
-            item.className = 'comment-item glass-card';
-            item.innerHTML = `<strong>${escapeHTML(name)}</strong><p>${escapeHTML(msg)}</p>`;
-            list.prepend(item);
-          }
-
-          if (countElem) {
-            countElem.textContent = parseInt(countElem.textContent || '0') + 1;
-          }
-
-          alert('Comment posted and forwarded to my email!');
-          form.reset();
-        } else {
-          alert('Failed to send comment.');
-        }
-      } catch (err) {
-        alert('Network error while posting comment.');
-      }
-    });
-  }
-    }
+}
