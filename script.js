@@ -65,8 +65,8 @@ const techStack = [
   { name: "Tailwind CSS", icon: "portfolio-frontend/assets/Tailwind CSS.png" },
   { name: "Unity Engine", icon: "portfolio-frontend/assets/Unity.png" },
   { name: "Kali Linux", icon: "portfolio-frontend/assets/Linux.png" },
-  { name: "Vite", icon: "portfolio-frontend/assets/icons/Vite.js.png" },
-  { name: "MongoDB", icon: "portfolio-frontend/assets/icons/MongoDB.png" }
+  { name: "Vite", icon: "portfolio-frontend/assets/Vite.js.png" },
+  { name: "MongoDB", icon: "portfolio-frontend/assets/MongoDB.png" }
 ];
 
 // --- Helper Functions ---
