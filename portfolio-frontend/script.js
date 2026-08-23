@@ -58,15 +58,15 @@ let certificates = [
 ];
 
 const techStack = [
-  { name: "React", icon: "portfolio-frontend/assets/icons/react.png" },
-  { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
-  { name: "Node.js", icon: "portfolio-frontend/assets/icons/nodejs.png" },
-  { name: "Flutter", icon: "portfolio-frontend/assets/icons/flutter.png" },
-  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/icons/tailwind.png" },
-  { name: "Unity Engine", icon: "portfolio-frontend/assets/icons/unity.png" },
-  { name: "Kali Linux", icon: "portfolio-frontend/assets/icons/kalilinux.png" },
-  { name: "Vite", icon: "portfolio-frontend/assets/icons/vite.png" },
-  { name: "MongoDB", icon: "portfolio-frontend/assets/icons/mongodb.png" }
+  { name: "React", icon: "portfolio-frontend/assets/react.png" },
+  { name: "JavaScript", icon: "portfolio-frontend/assets/javascript.png" },
+  { name: "Node.js", icon: "portfolio-frontend/assets/node.js.png" },
+  { name: "Flutter", icon: "portfolio-frontend/assets/flutter.png" },
+  { name: "Tailwind CSS", icon: "portfolio-frontend/assets/tailwind.png" },
+  { name: "Unity Engine", icon: "portfolio-frontend/assets/unity.png" },
+  { name: "Kali Linux", icon: "portfolio-frontend/assets/kalilinux.png" },
+  { name: "Vite", icon: "portfolio-frontend/assets/vite.png" },
+  { name: "MongoDB", icon: "portfolio-frontend/assets/mongodb.png" }
 ];
 
 // --- Helper Functions ---
