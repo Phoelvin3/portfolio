@@ -58,10 +58,10 @@ let certificates = [
 ];
 
 const techStack = [
-  { name: "React", icon: "portfolio-frontend/assets/react.png" },
+  { name: "React", icon: "portfolio-frontend/assets/React.png" },
   { name: "JavaScript", icon: "portfolio-frontend/assets/icons/javascript.png" },
-  { name: "Node.js", icon: "portfolio-frontend/assets/node.js.png" },
-  { name: "Flutter", icon: "portfolio-frontend/assets/flutter.png" },
+  { name: "Node.js", icon: "portfolio-frontend/assets/Node.js.png" },
+  { name: "Flutter", icon: "portfolio-frontend/assets/Flutter.png" },
   { name: "Tailwind CSS", icon: "portfolio-frontend/assets/icons/tailwind.png" },
   { name: "Unity Engine", icon: "portfolio-frontend/assets/icons/unity.png" },
   { name: "Kali Linux", icon: "portfolio-frontend/assets/icons/kalilinux.png" },
