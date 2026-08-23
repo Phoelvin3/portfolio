@@ -184,38 +184,38 @@
     </section>
 
     <!-- CONTACT & COMMENTS SECTION -->
-    <section id="contact" class="section">
-      <div class="section-header">
-        <h2>Get In <span class="gradient-text">Touch</span></h2>
-        <p class="subtitle">Got a question? Send a message or leave a public note.</p>
-      </div>
+<section id="contact" class="section">
+  <div class="section-header">
+    <h2>Get In <span class="gradient-text">Touch</span></h2>
+    <p class="subtitle">Got a question? Send a message or leave a note.</p>
+  </div>
 
-      <div class="contact-grid">
-        <!-- Contact Form -->
-        <div class="contact-box glass-card">
-          <h3>Contact Form</h3>
-          <p class="sub-text">Direct email dispatch</p>
-          <form id="contact-form">
-            <input type="text" id="contact-name" class="input-field" placeholder="Your Name" required />
-            <input type="email" id="contact-email" class="input-field" placeholder="Your Email" required />
-            <textarea id="contact-msg" class="input-field" rows="4" placeholder="Your Message" required></textarea>
-            <button type="submit" class="btn btn-primary btn-full">Send Message</button>
-          </form>
-        </div>
+  <div class="contact-grid">
+    <!-- Direct Email Form -->
+    <div class="contact-box glass-card">
+      <h3>Contact Form</h3>
+      <p class="sub-text">Direct email dispatch</p>
+      <form id="contact-form" action="https://formspree.io/f/mzepqjgl" method="POST">
+        <input type="text" name="name" id="contact-name" class="input-field" placeholder="Your Name" required />
+        <input type="email" name="_replyto" id="contact-email" class="input-field" placeholder="Your Email" required />
+        <textarea name="message" id="contact-msg" class="input-field" rows="4" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+      </form>
+    </div>
 
-        <!-- Comments Section -->
-        <div class="contact-box glass-card">
-          <h3>Community Wall (<span id="comment-count">0</span>)</h3>
-          <p class="sub-text">Leave a public comment</p>
-          <form id="comment-form" class="comment-form">
-            <input type="text" id="comment-name" class="input-field" placeholder="Your Name" required />
-            <textarea id="comment-msg" class="input-field" rows="2" placeholder="Write a comment..." required></textarea>
-            <button type="submit" class="btn btn-outline btn-full">Post Comment</button>
-          </form>
-          <div id="comments-list" class="comments-list"></div>
-        </div>
-      </div>
-    </section>
+    <!-- Email-backed Comment Form -->
+    <div class="contact-box glass-card">
+      <h3>Community Wall (<span id="comment-count">0</span>)</h3>
+      <p class="sub-text">Send a note to my email</p>
+      <form id="comment-form" class="comment-form" action="https://formspree.io/f/mzepqjgl" method="POST">
+        <input type="text" name="name" id="comment-name" class="input-field" placeholder="Your Name" required />
+        <textarea name="comment" id="comment-msg" class="input-field" rows="2" placeholder="Write a comment..." required></textarea>
+        <button type="submit" class="btn btn-outline btn-full">Post Comment</button>
+      </form>
+      <div id="comments-list" class="comments-list"></div>
+    </div>
+  </div>
+</section>
 
     <!-- FOOTER -->
     <footer class="footer">
