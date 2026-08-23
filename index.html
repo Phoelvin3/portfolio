@@ -19,22 +19,246 @@
   </div>
 
   <!-- ---------------- WELCOME OVERLAY SCREEN ---------------- -->
-  <div id="welcome-screen" class="welcome-overlay" onclick="this.style.display='none'; document.getElementById('main-content').classList.remove('hidden');">
+  <div id="welcome-screen" class="welcome-overlay">
     <div class="welcome-content">
       <div class="welcome-icons">
         <div class="icon-box">
-          <img src="portfolio-frontend/assets/React.png" alt="Code Icon" class="png-icon" onerror="this.style.display='none'" />
+          <img src="portfolio-frontend/assets/icons/react.png" alt="React" class="png-icon" onerror="this.style.display='none'" />
         </div>
         <div class="icon-box">
-          <img src="portfolio-frontend/assets/Flutter.png" alt="User Icon" class="png-icon" onerror="this.style.display='none'" />
+          <img src="portfolio-frontend/assets/icons/flutter.png" alt="Flutter" class="png-icon" onerror="this.style.display='none'" />
         </div>
         <div class="icon-box">
-          <img src="portfolio-frontend/assets/Node.js.png" alt="GitHub Icon" class="png-icon" onerror="this.style.display='none'" />
+          <img src="portfolio-frontend/assets/icons/nodejs.png" alt="Node.js" class="png-icon" onerror="this.style.display='none'" />
         </div>
       </div>
       <h1 class="welcome-title">
         Welcome To My <br />
         <span class="text-white">Portfolio Website</span>
+      </h1>
+      <p class="welcome-hint">
+        Click anywhere to enter ✨
+      </p>
+    </div>
+  </div>
+
+  <!-- ---------------- MAIN CONTENT WRAPPER ---------------- -->
+  <div id="main-content" class="main-container hidden">
+
+    <!-- NAVBAR -->
+    <header class="navbar glass-panel">
+      <a href="#" class="nav-brand">
+        <img src="portfolio-frontend/assets/icons/react.png" alt="Logo" class="nav-logo-img" onerror="this.style.display='none'" />
+        <span>Kelvin.dev</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section">
+      <div class="hero-text">
+        <div class="badge">
+          <span>🚀 Full Stack & Mobile Engineer</span>
+        </div>
+        <h1 class="hero-headline">
+          Computer Scientist & <br />
+          <span class="gradient-text">Full Stack Developer</span>
+        </h1>
+        <p class="hero-subtext">
+          Crafting modern, high-performance web & mobile applications. Focused on scalable full-stack software development, intuitive user interfaces, and robust systems architecture.
+        </p>
+        <div class="tech-tags">
+          <span class="tag">React</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">Flutter</span>
+          <span class="tag">Tailwind</span>
+          <span class="tag">Supabase</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn btn-primary">View Projects</a>
+          <a href="portfolio-frontend/assets/kelvin-kimutai-resume.pdf" download="Kelvin_Kimutai_CV.pdf" class="btn btn-outline">Download CV</a>
+        </div>
+        <div class="social-links">
+          <a href="https://github.com/Phoelvin3" target="_blank" rel="noreferrer" class="social-btn" aria-label="GitHub">
+            <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/kelvin-kimutai-26a233243/" target="_blank" rel="noreferrer" class="social-btn" aria-label="LinkedIn">
+            <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card-wrapper">
+        <div class="hero-card glass-panel">
+          <div class="avatar-box">
+            <img src="portfolio-frontend/assets/icons/flutter.png" alt="Kelvin" class="profile-img" onerror="this.src='portfolio-frontend/assets/icons/react.png'" />
+          </div>
+          <h2 class="card-name">Kelvin Kimutai</h2>
+          <p class="card-title">Computer Science Developer</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="section">
+      <div class="section-header">
+        <h2>About <span class="gradient-text">Me</span></h2>
+        <p class="subtitle">Innovating through code and clean design</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-avatar-container">
+          <div class="about-avatar-circle glass-panel">
+            <img src="portfolio-frontend/assets/icons/javascript.png" alt="About Profile" class="about-img" onerror="this.src='portfolio-frontend/assets/icons/react.png'" />
+          </div>
+        </div>
+        <div class="about-bio">
+          <h3>Hello, I'm <span class="gradient-text">Kelvin Kimutai</span></h3>
+          <p>
+            I am a Computer Science graduate passionate about full-stack web and mobile application development. Experienced in building modern, performant web platforms with React and Node.js, cross-platform mobile apps with Flutter, and interactive systems. I thrive on solving complex computational problems and building user-centric products.
+          </p>
+          <div class="about-actions" style="margin-top: 1.5rem;">
+            <a href="portfolio-frontend/assets/kelvin-kimutai-resume.pdf" download="Kelvin_Kimutai_CV.pdf" class="btn btn-primary">Download CV</a>
+            <a href="#portfolio" class="btn btn-outline">View Projects</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-value">B.Sc.</div>
+          <div class="stat-label">Computer Science</div>
+          <div class="stat-sub">Degree Holder</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-value">10+</div>
+          <div class="stat-label">TOTAL PROJECTS</div>
+          <div class="stat-sub">Web & Mobile Solutions</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-value">3+</div>
+          <div class="stat-label">YEARS DEV EXPERIENCE</div>
+          <div class="stat-sub">Continuous Learning</div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">COMMITMENT</div>
+          <div class="stat-sub">Scalable Architecture</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO SHOWCASE SECTION -->
+    <section id="portfolio" class="section">
+      <div class="section-header">
+        <h2>Portfolio <span class="gradient-text">Showcase</span></h2>
+        <p class="subtitle">Explore my journey through projects, certifications, and technical expertise.</p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="projects">Projects</button>
+        <button class="tab-btn" data-tab="certificates">Certificates</button>
+        <button class="tab-btn" data-tab="techstack">Tech Stack</button>
+      </div>
+
+      <!-- Tab Content Panels -->
+      <div id="tab-projects" class="tab-panel active">
+        <div class="grid-3" id="projects-container"></div>
+      </div>
+
+      <div id="tab-certificates" class="tab-panel">
+        <div class="grid-2" id="certificates-container"></div>
+      </div>
+
+      <div id="tab-techstack" class="tab-panel">
+        <div class="grid-4" id="techstack-container"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT & COMMENTS SECTION -->
+    <section id="contact" class="section">
+      <div class="section-header">
+        <h2>Get In <span class="gradient-text">Touch</span></h2>
+        <p class="subtitle">Got a question? Send a message or leave a public note.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <div class="contact-box glass-card">
+          <h3>Contact Form</h3>
+          <p class="sub-text">Direct email dispatch</p>
+          <form id="contact-form">
+            <input type="text" id="contact-name" class="input-field" placeholder="Your Name" required />
+            <input type="email" id="contact-email" class="input-field" placeholder="Your Email" required />
+            <textarea id="contact-msg" class="input-field" rows="4" placeholder="Your Message" required></textarea>
+            <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+          </form>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="contact-box glass-card">
+          <h3>Community Wall (<span id="comment-count">0</span>)</h3>
+          <p class="sub-text">Leave a public comment</p>
+          <form id="comment-form" class="comment-form">
+            <input type="text" id="comment-name" class="input-field" placeholder="Your Name" required />
+            <textarea id="comment-msg" class="input-field" rows="2" placeholder="Write a comment..." required></textarea>
+            <button type="submit" class="btn btn-outline btn-full">Post Comment</button>
+          </form>
+          <div id="comments-list" class="comments-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>&copy; 2026 Kelvin Kimutai. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <!-- ---------------- PROJECT DETAIL MODAL ---------------- -->
+  <div id="project-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <button id="modal-close-btn" class="modal-close" aria-label="Close modal">&times;</button>
+      <span id="modal-category" class="project-category"></span>
+      <h2 id="modal-title" class="project-title" style="margin-top:0.5rem;"></h2>
+      <p id="modal-desc" class="project-desc" style="display:block; margin: 1rem 0;"></p>
+      
+      <div class="stats-grid" style="margin-bottom: 1rem;">
+        <div class="stat-card glass-card">
+          <div id="modal-tech-count" class="stat-value">0</div>
+          <div class="stat-label">Tech Used</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div id="modal-features-count" class="stat-value">0</div>
+          <div class="stat-label">Key Features</div>
+        </div>
+      </div>
+
+      <h4 style="margin-bottom:0.5rem; font-size:0.85rem; color:var(--theme-light, #00f0ff);">Key Features:</h4>
+      <ul id="modal-features-list" style="padding-left:1.25rem; font-size:0.85rem; margin-bottom:1rem;"></ul>
+
+      <h4 style="margin-bottom:0.5rem; font-size:0.85rem; color:var(--theme-light, #00f0ff);">Technologies:</h4>
+      <div id="modal-tech-tags" class="tech-tags" style="margin-bottom:1.5rem;"></div>
+
+      <div style="display:flex; gap:0.75rem;">
+        <a id="modal-demo" href="#" target="_blank" rel="noreferrer" class="btn btn-primary btn-sm">Live Demo ↗</a>
+        <a id="modal-github" href="#" target="_blank" rel="noreferrer" class="btn btn-outline btn-sm">GitHub Repo</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="portfolio-frontend/script.js"></script>
+</body>
+</html>        <span class="text-white">Portfolio Website</span>
       </h1>
       <p class="welcome-hint">
         Click anywhere to enter ✨
