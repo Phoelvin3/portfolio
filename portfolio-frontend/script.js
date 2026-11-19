@@ -49,9 +49,20 @@ let projects = [
   },
   {
     id: '5',
+    title: 'eFootball Tactical Analyzer',
+    category: 'Web Tool',
+    description: 'Specialized web utility for analyzing formations, player playstyle matchups, and offensive tactical setups.',
+    demoUrl: '#',
+    githubUrl: '#',
+    tech: ['React', 'JavaScript', 'Tailwind CSS', 'Vite'],
+    features: ['Tactical layout mapping', 'Stat comparison matrix', 'Playstyle synergy overview'],
+    stats: { techCount: 4, featuresCount: 3 }
+  },
+  {
+    id: '6',
     title: 'Network Interface Manager',
     category: 'System Utility',
-    description: 'A desktop helper utility for automating interface monitoring, managing adapters, and inspecting real-time system status.',
+    description: 'Desktop helper tool for automating interface monitoring, managing adapters, and inspecting real-time network status.',
     demoUrl: '#',
     githubUrl: '#',
     tech: ['Node.js', 'React', 'JavaScript'],
@@ -63,72 +74,49 @@ let projects = [
 let comments = [];
 
 let certificates = [
-  {
-    id: 'c1',
-    title: 'Full Stack Web Development',
-    issuer: 'University / Professional Platform',
-    date: '2026',
-    credentialUrl: '#'
-  },
-  {
-    id: 'c2',
-    title: 'Mobile App Development with Flutter',
-    issuer: 'Professional Certification',
-    date: '2026',
-    credentialUrl: '#'
-  }
+  { id: 1, title: 'B.Sc. Computer Science Candidate', issuer: 'University Panel Verified', year: '2026', credentialUrl: '#' },
+  { id: 2, title: 'Full Stack Web Development', issuer: 'Meta / Coursera', year: '2025', credentialUrl: '#' },
+  { id: 3, title: 'Mobile App Development with Flutter', issuer: 'Google Certified', year: '2025', credentialUrl: '#' },
+  { id: 4, title: 'Node.js Application Developer', issuer: 'OpenJS Foundation', year: '2024', credentialUrl: '#' }
 ];
 
 const techStack = [
-  { name: 'React', icon: 'portfolio-frontend/assets/React.png' },
-  { name: 'JavaScript', icon: 'portfolio-frontend/assets/icons/javascript.png' },
-  { name: 'Node.js', icon: 'portfolio-frontend/assets/Node.js.png' },
-  { name: 'Flutter', icon: 'portfolio-frontend/assets/Flutter.png' },
-  { name: 'Tailwind CSS', icon: 'portfolio-frontend/assets/icons/tailwind.png' },
-  { name: 'Unity Engine', icon: 'portfolio-frontend/assets/icons/unity.png' },
-  { name: 'Kali Linux', icon: 'portfolio-frontend/assets/icons/kalilinux.png' },
-  { name: 'Vite', icon: 'portfolio-frontend/assets/icons/vite.png' },
-  { name: 'MongoDB', icon: 'portfolio-frontend/assets/icons/mongodb.png' }
+  { name: 'React', icon: 'portfolio-frontend/assets/icons/react.png', fallback: '⚛️' },
+  { name: 'JavaScript', icon: 'portfolio-frontend/assets/icons/javascript.png', fallback: '🟨' },
+  { name: 'Node.js', icon: 'portfolio-frontend/assets/icons/nodejs.png', fallback: '🟢' },
+  { name: 'Flutter', icon: 'portfolio-frontend/assets/icons/flutter.png', fallback: '💙' },
+  { name: 'Tailwind CSS', icon: 'portfolio-frontend/assets/icons/tailwind.png', fallback: '🎨' },
+  { name: 'Unity Engine', icon: 'portfolio-frontend/assets/icons/unity.png', fallback: '🎮' },
+  { name: 'Kali Linux', icon: 'portfolio-frontend/assets/icons/kalilinux.png', fallback: '🐉' },
+  { name: 'Vite', icon: 'portfolio-frontend/assets/icons/vite.png', fallback: '⚡' },
+  { name: 'MongoDB', icon: 'portfolio-frontend/assets/icons/mongodb.png', fallback: '🍃' }
 ];
 
 const heroRoles = [
-  'Full Stack Web Developer',
-  'Flutter Mobile Engineer',
-  'Computer Science Graduate'
+  'Full Stack & Mobile Engineer',
+  'React & Node.js Developer',
+  'Flutter Cross-Platform Builder'
 ];
 
-// --- Helper Functions ---
-function escapeHTML(str) {
-  if (!str) return '';
-  return String(str).replace(/[&<>'"]/g, tag => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    "'": '&#39;',
-    '"': '&quot;'
-  }[tag] || tag));
-}
+let selectedPhotoDataUrl = '';
+let revealObserver = null;
 
-// --- App Initialization ---
+// --- Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
   initWelcomeScreen();
-  initNavigation();
   initRoleTyping();
-  initTabs();
-  initSeeMoreProjects();
-  renderProjects();
   renderCertificates();
   renderTechStack();
-  initModal();
-  initForms();
+  renderProjects();
+  renderComments();
+  setupEventListeners();
   initScrollAnimations();
 
-  // Attempt backend loads gracefully
   await fetchProjects();
   await fetchComments();
 });
 
-// --- Welcome Screen Dismissal with Smooth Transition ---
+// --- Welcome Screen Dismissal ---
 function initWelcomeScreen() {
   const welcomeScreen = document.getElementById('welcome-screen');
   const mainContent = document.getElementById('main-content');
@@ -136,13 +124,16 @@ function initWelcomeScreen() {
   if (!welcomeScreen || !mainContent) return;
 
   let dismissed = false;
-
   const handleDismiss = (e) => {
     if (dismissed) return;
     dismissed = true;
     if (e) e.stopPropagation();
 
-    welcomeScreen.classList.add('leaving');
+    welcomeScreen.style.opacity = '0';
+    welcomeScreen.style.transform = 'scale(1.03)';
+    welcomeScreen.style.transition = 'opacity 0.35s ease-out, transform 0.35s ease-out';
+    welcomeScreen.style.pointerEvents = 'none';
+
     mainContent.classList.remove('hidden');
     mainContent.style.display = 'block';
     mainContent.classList.add('entered');
@@ -152,7 +143,7 @@ function initWelcomeScreen() {
       welcomeScreen.style.display = 'none';
       welcomeScreen.classList.add('hidden');
       observeRevealElements();
-    }, 420);
+    }, 350);
   };
 
   welcomeScreen.addEventListener('click', handleDismiss);
@@ -210,82 +201,7 @@ function initRoleTyping() {
   }, 1800);
 }
 
-// --- Navigation Scroll & Active Section Highlight ---
-function initNavigation() {
-  const links = Array.from(document.querySelectorAll('.nav-links a'));
-  const sections = links
-    .map(link => document.getElementById(link.getAttribute('href').substring(1)))
-    .filter(Boolean);
-
-  links.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = link.getAttribute('href').substring(1);
-      const section = document.getElementById(targetId);
-      if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-
-  if (sections.length > 0 && 'IntersectionObserver' in window) {
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          links.forEach(a => {
-            a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
-          });
-        }
-      });
-    }, { rootMargin: '-35% 0px -50% 0px', threshold: 0.05 });
-
-    sections.forEach(sec => navObserver.observe(sec));
-  }
-}
-
-// --- Tab Switching Logic ---
-function initTabs() {
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabPanels = document.querySelectorAll('.tab-panel');
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetTab = btn.getAttribute('data-tab');
-
-      tabBtns.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      tabPanels.forEach(p => p.classList.remove('active'));
-
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      const activePanel = document.getElementById(`tab-${targetTab}`);
-      if (activePanel) {
-        activePanel.classList.add('active');
-        activePanel.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
-      }
-    });
-  });
-}
-
-// --- See More / See Less Projects Toggle ---
-function initSeeMoreProjects() {
-  const toggleBtn = document.getElementById('toggle-more-projects-btn');
-  const container = document.getElementById('projects-container');
-
-  if (!toggleBtn || !container) return;
-
-  toggleBtn.addEventListener('click', () => {
-    const expanded = container.classList.toggle('expanded');
-    toggleBtn.textContent = expanded ? 'See Less ↑' : 'See More ↓';
-  });
-}
-
-// --- Scroll Reveal & Counter Animations ---
-let revealObserver = null;
-
+// --- Scroll Reveal & Stat Counters ---
 function initScrollAnimations() {
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
@@ -343,7 +259,7 @@ function animateStatCounter(el) {
   requestAnimationFrame(step);
 }
 
-// --- API Methods ---
+// --- API Calls ---
 async function fetchProjects() {
   try {
     const res = await fetch(`${API_BASE_URL}/projects`);
@@ -353,7 +269,7 @@ async function fetchProjects() {
       renderProjects();
     }
   } catch (err) {
-    console.warn('Backend unavailable, utilizing default fallback projects.');
+    console.warn('Backend unavailable, using default fallback projects:', err);
   }
 }
 
@@ -366,11 +282,59 @@ async function fetchComments() {
       renderComments();
     }
   } catch (err) {
-    console.warn('Comments service unavailable.');
+    console.warn('Failed to fetch comments from backend:', err);
+    renderComments();
   }
 }
 
-// --- Render Functions ---
+async function submitCommentToBackend(name, message, photoUrl = '') {
+  try {
+    const res = await fetch(`${API_BASE_URL}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, message })
+    });
+    const result = await res.json();
+    if (result.success && result.data) {
+      comments.unshift({ ...result.data, photoUrl: result.data.photoUrl || photoUrl });
+      renderComments();
+      return true;
+    } else {
+      alert(result.error || 'Failed to post comment.');
+      return false;
+    }
+  } catch (err) {
+    console.warn('Error posting comment to backend, displaying locally:', err);
+    const localComment = { name, message, photoUrl, createdAt: new Date().toISOString() };
+    comments.unshift(localComment);
+    renderComments();
+    return true;
+  }
+}
+
+async function submitContactToBackend(name, email, message) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message })
+    });
+    const result = await res.json();
+    if (result.success) {
+      alert('Message sent successfully!');
+      return true;
+    } else {
+      alert(result.error || 'Failed to send message.');
+      return false;
+    }
+  } catch (err) {
+    console.warn('Error submitting contact form:', err);
+    alert('Thank you for your message! (Server is currently in offline preview mode).');
+    return true;
+  }
+}
+
+// --- Render Methods ---
 function renderProjects() {
   const container = document.getElementById('projects-container');
   const seeMoreWrap = document.getElementById('see-more-projects-wrap');
@@ -386,25 +350,21 @@ function renderProjects() {
     seeMoreWrap.style.display = projects.length > 3 ? 'flex' : 'none';
   }
 
-  container.innerHTML = projects.map((p, index) => `
-    <article class="glass-card project-card reveal-on-scroll ${index >= 3 ? 'extra-project' : ''}" style="--reveal-delay: ${Math.min(index * 70, 280)}ms">
+  container.innerHTML = projects.map((proj, index) => `
+    <div class="glass-card project-card reveal-on-scroll ${index >= 3 ? 'extra-project' : ''}" style="--reveal-delay: ${Math.min(index * 70, 280)}ms">
       <div>
         <div class="project-banner">
-          <span>${escapeHTML(p.title.split(' ').slice(0, 2).join(' '))}</span>
+          <span>${escapeHTML(proj.title)}</span>
         </div>
-        <span class="project-category">${escapeHTML(p.category)}</span>
-        <h3 class="project-title">${escapeHTML(p.title)}</h3>
-        <p class="project-desc">${escapeHTML(p.description)}</p>
-        <div class="tech-tags">
-          ${p.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
-        </div>
+        <span class="project-category">${escapeHTML(proj.category)}</span>
+        <h3 class="project-title">${escapeHTML(proj.title)}</h3>
+        <p class="project-desc">${escapeHTML(proj.description)}</p>
       </div>
       <div class="project-footer">
-        <button type="button" class="btn btn-outline btn-sm view-project-btn" onclick="openModal('${escapeHTML(p.id)}')">
-          Details →
-        </button>
+        <a href="${escapeHTML(proj.demoUrl || '#')}" class="demo-link" target="_blank" rel="noopener noreferrer">Live Demo ↗</a>
+        <button type="button" class="btn-details" onclick="openModal('${escapeHTML(proj.id)}')">Details →</button>
       </div>
-    </article>
+    </div>
   `).join('');
 
   observeRevealElements();
@@ -414,17 +374,16 @@ function renderCertificates() {
   const container = document.getElementById('certificates-container');
   if (!container) return;
 
-  container.innerHTML = certificates.map((c, index) => `
+  container.innerHTML = certificates.map((cert, index) => `
     <div class="glass-card cert-card reveal-on-scroll" style="--reveal-delay: ${index * 80}ms">
-      <div style="display:flex; gap:1rem; align-items:flex-start;">
-        <div class="cert-icon">📜</div>
-        <div>
-          <h4 class="cert-title">${escapeHTML(c.title)}</h4>
-          <p class="cert-issuer">${escapeHTML(c.issuer)}</p>
-          <p class="cert-date">Issued: ${escapeHTML(c.date)}</p>
-        </div>
+      <div class="cert-icon">
+        <svg viewBox="0 0 24 24" class="svg-icon"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
       </div>
-      <a href="${escapeHTML(c.credentialUrl)}" target="_blank" rel="noreferrer" class="btn btn-outline btn-sm">Verify Credential</a>
+      <div>
+        <h3 class="cert-title">${escapeHTML(cert.title)}</h3>
+        <p class="cert-issuer">${escapeHTML(cert.issuer)}</p>
+        <span class="cert-badge">Issued ${escapeHTML(cert.year)}</span>
+      </div>
     </div>
   `).join('');
 
@@ -437,7 +396,8 @@ function renderTechStack() {
 
   container.innerHTML = techStack.map((tech, index) => `
     <div class="glass-card tech-card reveal-on-scroll" style="--reveal-delay: ${Math.min(index * 45, 320)}ms">
-      <img src="${escapeHTML(tech.icon)}" alt="${escapeHTML(tech.name)}" class="tech-card-icon" onerror="this.style.display='none'" />
+      <img src="${escapeHTML(tech.icon)}" alt="${escapeHTML(tech.name)}" class="tech-card-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
+      <span class="tech-icon" style="display:none;">${escapeHTML(tech.fallback || '✦')}</span>
       <span class="tech-name">${escapeHTML(tech.name)}</span>
     </div>
   `).join('');
@@ -447,106 +407,259 @@ function renderTechStack() {
 
 function renderComments() {
   const list = document.getElementById('comments-list');
-  const countElem = document.getElementById('comment-count');
-
-  if (countElem) countElem.textContent = comments.length;
+  const count = document.getElementById('comment-count');
   if (!list) return;
 
-  list.innerHTML = comments.map(c => `
-    <div class="comment-item glass-card">
-      <strong class="comment-author">${escapeHTML(c.name)}</strong>
-      <p>${escapeHTML(c.message)}</p>
-    </div>
-  `).join('');
-}
+  if (count) count.textContent = comments.length;
 
-// --- Modal Handlers ---
-function initModal() {
-  const modal = document.getElementById('project-modal');
-  const closeBtn = document.getElementById('modal-close-btn');
-
-  if (closeBtn && modal) {
-    closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.add('hidden');
-    });
+  if (comments.length === 0) {
+    list.innerHTML = `<p class="text-muted" style="font-size: 0.75rem;">No comments yet. Be the first!</p>`;
+    return;
   }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-      modal.classList.add('hidden');
-    }
-  });
+  list.innerHTML = comments.map(c => {
+    const initial = escapeHTML((c.name || '?').trim().charAt(0).toUpperCase() || '?');
+    const avatarHtml = c.photoUrl
+      ? `<img src="${escapeHTML(c.photoUrl)}" alt="${escapeHTML(c.name)}" class="comment-avatar" />`
+      : `<div class="comment-avatar" aria-hidden="true">${initial}</div>`;
+
+    return `
+      <div class="glass-card comment-item">
+        ${avatarHtml}
+        <div class="comment-body">
+          <div class="comment-header">
+            <span class="comment-author">${escapeHTML(c.name)}</span>
+            <span class="comment-time">${formatTime(c.createdAt || c.time)}</span>
+          </div>
+          <p>${escapeHTML(c.message)}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function openModal(projectId) {
-  const project = projects.find(p => String(p.id) === String(projectId));
-  if (!project) return;
+// --- Event Listeners & Interaction ---
+function setupEventListeners() {
+  // Smooth scroll & active section tracking for nav links
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+  const sections = navLinks
+    .map(link => document.getElementById(link.getAttribute('href').substring(1)))
+    .filter(Boolean);
 
-  document.getElementById('modal-title').textContent = project.title;
-  document.getElementById('modal-category').textContent = project.category;
-  document.getElementById('modal-desc').textContent = project.description;
-  document.getElementById('modal-tech-count').textContent = project.stats ? project.stats.techCount : project.tech.length;
-  document.getElementById('modal-features-count').textContent = project.stats ? project.stats.featuresCount : project.features.length;
-
-  const featuresList = document.getElementById('modal-features-list');
-  featuresList.innerHTML = project.features.map(f => `<li>${escapeHTML(f)}</li>`).join('');
-
-  const techTags = document.getElementById('modal-tech-tags');
-  techTags.innerHTML = project.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
-
-  document.getElementById('modal-demo').href = project.demoUrl || '#';
-  document.getElementById('modal-github').href = project.githubUrl || '#';
-
-  document.getElementById('project-modal').classList.remove('hidden');
-}
-
-// --- Form Submissions ---
-function initForms() {
-  const contactForm = document.getElementById('contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
       e.preventDefault();
-      const name = document.getElementById('contact-name').value;
-      const email = document.getElementById('contact-email').value;
-      const message = document.getElementById('contact-msg').value;
-
-      try {
-        await fetch(`${API_BASE_URL}/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, message })
-        });
-      } catch (err) {
-        console.warn('Contact API offline, fallback alert triggered.');
+      const targetId = link.getAttribute('href').substring(1);
+      const section = document.getElementById(targetId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
       }
+    });
+  });
 
-      alert('Thank you! Your message has been sent.');
-      contactForm.reset();
+  if (sections.length > 0 && 'IntersectionObserver' in window) {
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: '-35% 0px -50% 0px', threshold: 0.05 });
+
+    sections.forEach(sec => navObserver.observe(sec));
+  }
+
+  // Showcase Tabs
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const targetTab = btn.getAttribute('data-tab');
+      const panel = document.getElementById(`tab-${targetTab}`);
+      if (panel) {
+        panel.classList.add('active');
+        panel.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
+      }
+    });
+  });
+
+  // See More / See Less Projects Toggle
+  const toggleMoreBtn = document.getElementById('toggle-more-projects-btn');
+  const projectsContainer = document.getElementById('projects-container');
+  if (toggleMoreBtn && projectsContainer) {
+    toggleMoreBtn.addEventListener('click', () => {
+      const expanded = projectsContainer.classList.toggle('expanded');
+      toggleMoreBtn.textContent = expanded ? 'See Less ↑' : 'See More ↓';
+      projectsContainer.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
     });
   }
 
+  // Optional Comment Photo Upload
+  const photoInput = document.getElementById('comment-photo');
+  const photoLabel = document.getElementById('comment-photo-label');
+  if (photoInput && photoLabel) {
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files && photoInput.files[0];
+      if (!file) {
+        selectedPhotoDataUrl = '';
+        photoLabel.textContent = '🖼 Choose Profile Photo';
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image must be 5MB or smaller.');
+        photoInput.value = '';
+        selectedPhotoDataUrl = '';
+        photoLabel.textContent = '🖼 Choose Profile Photo';
+        return;
+      }
+      photoLabel.textContent = `✓ ${file.name}`;
+      const reader = new FileReader();
+      reader.onload = () => {
+        selectedPhotoDataUrl = typeof reader.result === 'string' ? reader.result : '';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Comment Submission
   const commentForm = document.getElementById('comment-form');
   if (commentForm) {
     commentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('comment-name').value;
-      const msg = document.getElementById('comment-msg').value;
+      const nameInput = document.getElementById('comment-name');
+      const msgInput = document.getElementById('comment-msg');
 
-      comments.unshift({ name, message: msg });
-      renderComments();
+      const name = nameInput.value.trim();
+      const message = msgInput.value.trim();
 
-      try {
-        await fetch(`${API_BASE_URL}/comments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, message: msg })
-        });
-      } catch (err) {
-        console.warn('Comments API offline, updated locally.');
+      if (name && message) {
+        const success = await submitCommentToBackend(name, message, selectedPhotoDataUrl);
+        if (success) {
+          nameInput.value = '';
+          msgInput.value = '';
+          selectedPhotoDataUrl = '';
+          if (photoInput) photoInput.value = '';
+          if (photoLabel) photoLabel.textContent = '🖼 Choose Profile Photo';
+        }
       }
-
-      commentForm.reset();
     });
   }
+
+  // Contact Form Submission
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nameInput = document.getElementById('contact-name');
+      const emailInput = document.getElementById('contact-email');
+      const msgInput = document.getElementById('contact-msg');
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = msgInput.value.trim();
+
+      if (name && email && message) {
+        const success = await submitContactToBackend(name, email, message);
+        if (success) {
+          contactForm.reset();
+        }
+      }
+    });
+  }
+
+  // Modal Close Events
+  const modalCloseBtn = document.getElementById('modal-close-btn');
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', closeModal);
+  }
+
+  const modal = document.getElementById('project-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+}
+
+// --- Modal Functions ---
+function openModal(projectId) {
+  const proj = projects.find(p => String(p.id) === String(projectId));
+  if (!proj) return;
+
+  const modalTitle = document.getElementById('modal-title');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalCat = document.getElementById('modal-category');
+  const modalBreadcrumb = document.getElementById('modal-breadcrumb-title');
+  const modalPreviewBadge = document.getElementById('modal-preview-badge');
+
+  if (modalTitle) modalTitle.textContent = proj.title;
+  if (modalDesc) modalDesc.textContent = proj.description;
+  if (modalCat && proj.category) modalCat.textContent = proj.category;
+  if (modalBreadcrumb) modalBreadcrumb.textContent = proj.title;
+  if (modalPreviewBadge) modalPreviewBadge.textContent = proj.title;
+
+  const demoLink = document.getElementById('modal-demo');
+  if (demoLink) demoLink.href = proj.demoUrl || '#';
+
+  const githubLink = document.getElementById('modal-github');
+  if (githubLink) githubLink.href = proj.githubUrl || '#';
+
+  const techCountEl = document.getElementById('modal-tech-count');
+  const featuresCountEl = document.getElementById('modal-features-count');
+  if (techCountEl) techCountEl.textContent = proj.stats ? proj.stats.techCount : (proj.tech ? proj.tech.length : 0);
+  if (featuresCountEl) featuresCountEl.textContent = proj.stats ? proj.stats.featuresCount : (proj.features ? proj.features.length : 0);
+
+  const featuresList = document.getElementById('modal-features-list');
+  if (featuresList) {
+    featuresList.innerHTML = (proj.features || []).map(f => `<li>${escapeHTML(f)}</li>`).join('');
+  }
+
+  const techTags = document.getElementById('modal-tech-tags');
+  if (techTags) {
+    techTags.innerHTML = (proj.tech || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
+  }
+
+  const modal = document.getElementById('project-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  const modal = document.getElementById('project-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+// --- Utility Helpers ---
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>'"]/g,
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+
+function formatTime(isoString) {
+  if (!isoString) return 'Recently';
+  const date = new Date(isoString);
+  if (isNaN(date.getTime())) return isoString;
+
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
+
+  if (diffInSeconds < 60) return 'Just now';
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  return `${Math.floor(diffInSeconds / 86400)}d ago`;
 }
