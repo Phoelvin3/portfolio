@@ -44,14 +44,25 @@ let projects = [
     demoUrl: '#',
     githubUrl: '#',
     tech: ['React', 'Node.js', 'Flutter', 'Tailwind CSS'],
-    features: ['Interactive itinerary scheduling', 'Booking checkout flow', 'Real-time seat updates'],
+    features: ['Interactive itinerary scheduling', 'Booking checkout workflow', 'Real-time seat updates'],
     stats: { techCount: 4, featuresCount: 3 }
   },
   {
     id: '5',
+    title: 'eFootball Tactical Analyzer',
+    category: 'Web Tool',
+    description: 'Specialized web utility for analyzing formations, player playstyle matchups, and offensive tactical setups.',
+    demoUrl: '#',
+    githubUrl: '#',
+    tech: ['React', 'JavaScript', 'Tailwind CSS', 'Vite'],
+    features: ['Tactical layout mapping', 'Stat comparison matrix', 'Playstyle synergy overview'],
+    stats: { techCount: 4, featuresCount: 3 }
+  },
+  {
+    id: '6',
     title: 'Network Interface Manager',
     category: 'System Utility',
-    description: 'A desktop helper utility for automating interface monitoring, managing adapters, and inspecting real-time system status.',
+    description: 'Desktop helper tool for automating interface monitoring, managing adapters, and inspecting real-time network status.',
     demoUrl: '#',
     githubUrl: '#',
     tech: ['Node.js', 'React', 'JavaScript'],
@@ -81,20 +92,20 @@ let certificates = [
 
 const techStack = [
   { name: 'React', icon: 'portfolio-frontend/assets/React.png' },
-  { name: 'JavaScript', icon: 'portfolio-frontend/assets/icons/javascript.png' },
+  { name: 'JavaScript', icon: 'portfolio-frontend/assets/JavaScript.png' },
   { name: 'Node.js', icon: 'portfolio-frontend/assets/Node.js.png' },
   { name: 'Flutter', icon: 'portfolio-frontend/assets/Flutter.png' },
-  { name: 'Tailwind CSS', icon: 'portfolio-frontend/assets/icons/tailwind.png' },
-  { name: 'Unity Engine', icon: 'portfolio-frontend/assets/icons/unity.png' },
-  { name: 'Kali Linux', icon: 'portfolio-frontend/assets/icons/kalilinux.png' },
-  { name: 'Vite', icon: 'portfolio-frontend/assets/icons/vite.png' },
-  { name: 'MongoDB', icon: 'portfolio-frontend/assets/icons/mongodb.png' }
+  { name: 'Tailwind CSS', icon: 'portfolio-frontend/assets/Tailwind CSS.png' },
+  { name: 'Unity Engine', icon: 'portfolio-frontend/assets/Unity.png' },
+  { name: 'Kali Linux', icon: 'portfolio-frontend/assets/Linux.png' },
+  { name: 'Vite', icon: 'portfolio-frontend/assets/Vite.js.png' },
+  { name: 'MongoDB', icon: 'portfolio-frontend/assets/MongoDB.png' }
 ];
 
 const heroRoles = [
-  'Full Stack Web Developer',
-  'Flutter Mobile Engineer',
-  'Computer Science Graduate'
+  'Full Stack & Mobile Engineer',
+  'React & Node.js Developer',
+  'Flutter Cross-Platform Builder'
 ];
 
 // --- Helper Functions ---
@@ -109,6 +120,17 @@ function escapeHTML(str) {
   }[tag] || tag));
 }
 
+function formatTime(isoString) {
+  if (!isoString) return 'Just now';
+  const date = new Date(isoString);
+  if (isNaN(date.getTime())) return isoString;
+  const diffSec = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (diffSec < 60) return 'Just now';
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  return `${Math.floor(diffSec / 86400)}d ago`;
+}
+
 // --- App Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
   initWelcomeScreen();
@@ -119,16 +141,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderProjects();
   renderCertificates();
   renderTechStack();
+  renderComments();
   initModal();
   initForms();
   initScrollAnimations();
 
-  // Attempt backend loads gracefully
+  // Attempt backend loads gracefully if active
   await fetchProjects();
   await fetchComments();
 });
 
-// --- Welcome Screen Dismissal with Smooth Transition ---
+// --- Welcome Screen Dismissal with Smooth Animation ---
 function initWelcomeScreen() {
   const welcomeScreen = document.getElementById('welcome-screen');
   const mainContent = document.getElementById('main-content');
@@ -142,7 +165,11 @@ function initWelcomeScreen() {
     dismissed = true;
     if (e) e.stopPropagation();
 
-    welcomeScreen.classList.add('leaving');
+    welcomeScreen.style.opacity = '0';
+    welcomeScreen.style.transform = 'scale(1.03)';
+    welcomeScreen.style.transition = 'opacity 0.35s ease-out, transform 0.35s ease-out';
+    welcomeScreen.style.pointerEvents = 'none';
+
     mainContent.classList.remove('hidden');
     mainContent.style.display = 'block';
     mainContent.classList.add('entered');
@@ -152,7 +179,7 @@ function initWelcomeScreen() {
       welcomeScreen.style.display = 'none';
       welcomeScreen.classList.add('hidden');
       observeRevealElements();
-    }, 420);
+    }, 350);
   };
 
   welcomeScreen.addEventListener('click', handleDismiss);
@@ -280,6 +307,7 @@ function initSeeMoreProjects() {
   toggleBtn.addEventListener('click', () => {
     const expanded = container.classList.toggle('expanded');
     toggleBtn.textContent = expanded ? 'See Less ↑' : 'See More ↓';
+    container.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
   });
 }
 
@@ -387,12 +415,12 @@ function renderProjects() {
   }
 
   container.innerHTML = projects.map((p, index) => `
-    <article class="glass-card project-card reveal-on-scroll ${index >= 3 ? 'extra-project' : ''}" style="--reveal-delay: ${Math.min(index * 70, 280)}ms">
+    <div class="glass-card project-card reveal-on-scroll ${index >= 3 ? 'extra-project' : ''}" style="--reveal-delay: ${Math.min(index * 70, 280)}ms">
       <div>
         <div class="project-banner">
-          <span>${escapeHTML(p.title.split(' ').slice(0, 2).join(' '))}</span>
+          <span>${escapeHTML(p.title)}</span>
         </div>
-        <span class="project-category">${escapeHTML(p.category)}</span>
+        <span class="modal-category-tag">${escapeHTML(p.category)}</span>
         <h3 class="project-title">${escapeHTML(p.title)}</h3>
         <p class="project-desc">${escapeHTML(p.description)}</p>
         <div class="tech-tags">
@@ -400,11 +428,12 @@ function renderProjects() {
         </div>
       </div>
       <div class="project-footer">
+        <a href="${escapeHTML(p.demoUrl || '#')}" target="_blank" rel="noreferrer" class="demo-link">Live Demo ↗</a>
         <button type="button" class="btn btn-outline btn-sm view-project-btn" onclick="openModal('${escapeHTML(p.id)}')">
           Details →
         </button>
       </div>
-    </article>
+    </div>
   `).join('');
 
   observeRevealElements();
@@ -416,10 +445,10 @@ function renderCertificates() {
 
   container.innerHTML = certificates.map((c, index) => `
     <div class="glass-card cert-card reveal-on-scroll" style="--reveal-delay: ${index * 80}ms">
-      <div style="display:flex; gap:1rem; align-items:flex-start;">
-        <div class="cert-icon">📜</div>
+      <div class="cert-top">
+        <div class="cert-icon">🏅</div>
         <div>
-          <h4 class="cert-title">${escapeHTML(c.title)}</h4>
+          <h3 class="cert-title">${escapeHTML(c.title)}</h3>
           <p class="cert-issuer">${escapeHTML(c.issuer)}</p>
           <p class="cert-date">Issued: ${escapeHTML(c.date)}</p>
         </div>
@@ -438,7 +467,7 @@ function renderTechStack() {
   container.innerHTML = techStack.map((tech, index) => `
     <div class="glass-card tech-card reveal-on-scroll" style="--reveal-delay: ${Math.min(index * 45, 320)}ms">
       <img src="${escapeHTML(tech.icon)}" alt="${escapeHTML(tech.name)}" class="tech-card-icon" onerror="this.style.display='none'" />
-      <span class="tech-name">${escapeHTML(tech.name)}</span>
+      <span class="tech-card-name">${escapeHTML(tech.name)}</span>
     </div>
   `).join('');
 
@@ -452,12 +481,25 @@ function renderComments() {
   if (countElem) countElem.textContent = comments.length;
   if (!list) return;
 
-  list.innerHTML = comments.map(c => `
-    <div class="comment-item glass-card">
-      <strong class="comment-author">${escapeHTML(c.name)}</strong>
-      <p>${escapeHTML(c.message)}</p>
-    </div>
-  `).join('');
+  list.innerHTML = comments.map(c => {
+    const initial = escapeHTML((c.name || '?').trim().charAt(0).toUpperCase() || '?');
+    const avatarHtml = c.photoUrl
+      ? `<img src="${escapeHTML(c.photoUrl)}" alt="${escapeHTML(c.name)}" class="comment-avatar" />`
+      : `<div class="comment-avatar" aria-hidden="true">${initial}</div>`;
+
+    return `
+      <div class="comment-item glass-card">
+        ${avatarHtml}
+        <div class="comment-body">
+          <div class="comment-meta-row">
+            <strong class="comment-author">${escapeHTML(c.name)}</strong>
+            <span class="comment-time">${formatTime(c.createdAt)}</span>
+          </div>
+          <p>${escapeHTML(c.message)}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 // --- Modal Handlers ---
@@ -483,46 +525,97 @@ function openModal(projectId) {
   const project = projects.find(p => String(p.id) === String(projectId));
   if (!project) return;
 
-  document.getElementById('modal-title').textContent = project.title;
-  document.getElementById('modal-category').textContent = project.category;
-  document.getElementById('modal-desc').textContent = project.description;
-  document.getElementById('modal-tech-count').textContent = project.stats ? project.stats.techCount : project.tech.length;
-  document.getElementById('modal-features-count').textContent = project.stats ? project.stats.featuresCount : project.features.length;
+  const titleEl = document.getElementById('modal-title');
+  const catEl = document.getElementById('modal-category');
+  const descEl = document.getElementById('modal-desc');
+  const techCountEl = document.getElementById('modal-tech-count');
+  const featuresCountEl = document.getElementById('modal-features-count');
+  const breadcrumbEl = document.getElementById('modal-breadcrumb-title');
+  const previewBadgeEl = document.getElementById('modal-preview-badge');
+
+  if (titleEl) titleEl.textContent = project.title;
+  if (catEl) catEl.textContent = project.category;
+  if (descEl) descEl.textContent = project.description;
+  if (breadcrumbEl) breadcrumbEl.textContent = project.title;
+  if (previewBadgeEl) previewBadgeEl.textContent = project.title;
+  if (techCountEl) techCountEl.textContent = project.stats ? project.stats.techCount : project.tech.length;
+  if (featuresCountEl) featuresCountEl.textContent = project.stats ? project.stats.featuresCount : project.features.length;
 
   const featuresList = document.getElementById('modal-features-list');
-  featuresList.innerHTML = project.features.map(f => `<li>${escapeHTML(f)}</li>`).join('');
+  if (featuresList) {
+    featuresList.innerHTML = project.features.map(f => `<li>${escapeHTML(f)}</li>`).join('');
+  }
 
   const techTags = document.getElementById('modal-tech-tags');
-  techTags.innerHTML = project.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
+  if (techTags) {
+    techTags.innerHTML = project.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
+  }
 
-  document.getElementById('modal-demo').href = project.demoUrl || '#';
-  document.getElementById('modal-github').href = project.githubUrl || '#';
+  const demoEl = document.getElementById('modal-demo');
+  const githubEl = document.getElementById('modal-github');
+  if (demoEl) demoEl.href = project.demoUrl || '#';
+  if (githubEl) githubEl.href = project.githubUrl || '#';
 
-  document.getElementById('project-modal').classList.remove('hidden');
+  const modal = document.getElementById('project-modal');
+  if (modal) modal.classList.remove('hidden');
 }
 
-// --- Form Submissions ---
+// --- Form Submissions (Formspree Direct Dispatch + Comments) ---
 function initForms() {
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('contact-name').value;
-      const email = document.getElementById('contact-email').value;
-      const message = document.getElementById('contact-msg').value;
+      const form = e.target;
+      const data = new FormData(form);
 
       try {
-        await fetch(`${API_BASE_URL}/contact`, {
+        const response = await fetch(form.action, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, message })
+          body: data,
+          headers: { 'Accept': 'application/json' }
         });
+
+        if (response.ok) {
+          alert('Thank you! Your message has been sent to my email.');
+          form.reset();
+        } else {
+          const errData = await response.json();
+          alert(`Formspree Error: ${errData.errors ? errData.errors.map(err => err.message).join(', ') : 'Submission failed.'}`);
+        }
       } catch (err) {
-        console.warn('Contact API offline, fallback alert triggered.');
+        alert('Network error. Check your internet connection or Formspree endpoint URL.');
+      }
+    });
+  }
+
+  const photoInput = document.getElementById('comment-photo');
+  const photoLabel = document.getElementById('comment-photo-label');
+  let selectedPhotoDataUrl = '';
+
+  if (photoInput && photoLabel) {
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files && photoInput.files[0];
+      if (!file) {
+        selectedPhotoDataUrl = '';
+        photoLabel.textContent = '🖼 Choose Profile Photo';
+        return;
       }
 
-      alert('Thank you! Your message has been sent.');
-      contactForm.reset();
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image must be 5MB or smaller.');
+        photoInput.value = '';
+        selectedPhotoDataUrl = '';
+        photoLabel.textContent = '🖼 Choose Profile Photo';
+        return;
+      }
+
+      photoLabel.textContent = `✓ ${file.name}`;
+      const reader = new FileReader();
+      reader.onload = () => {
+        selectedPhotoDataUrl = typeof reader.result === 'string' ? reader.result : '';
+      };
+      reader.readAsDataURL(file);
     });
   }
 
@@ -530,10 +623,18 @@ function initForms() {
   if (commentForm) {
     commentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('comment-name').value;
-      const msg = document.getElementById('comment-msg').value;
+      const nameInput = document.getElementById('comment-name');
+      const msgInput = document.getElementById('comment-msg');
+      const name = nameInput ? nameInput.value.trim() : '';
+      const msg = msgInput ? msgInput.value.trim() : '';
+      if (!name || !msg) return;
 
-      comments.unshift({ name, message: msg });
+      comments.unshift({
+        name,
+        message: msg,
+        photoUrl: selectedPhotoDataUrl,
+        createdAt: new Date().toISOString()
+      });
       renderComments();
 
       try {
@@ -547,6 +648,8 @@ function initForms() {
       }
 
       commentForm.reset();
+      selectedPhotoDataUrl = '';
+      if (photoLabel) photoLabel.textContent = '🖼 Choose Profile Photo';
     });
   }
 }
